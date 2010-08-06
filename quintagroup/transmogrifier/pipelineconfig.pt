@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+  <title>Content migration configuration</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+
+    <h1>Configuration of transmogrifier pipelines for content migration</h1>
+
+    <div style="background-color:#eee; padding:0.5em; line-height:1.2em;">
+        The default configuration is registered in ZCML and it's initially displayed
+        in this form. If you click 'Save' button for the first time it will be 
+        persisted in datebase and will override the default configuration. To swich
+        back to default configuration simply leave blank input area and click 'Save'.
+    </div>
+
+    <pre tal:content="view/status" tal:condition="view/status"
+         style="background-color:#ddd; padding:0.5em;
+         border: 1px black dashed; line-height:1.2em;">
+        Status
+    </pre>
+
+    <form action="#" method="POST"
+        tal:attributes="action request/getURL">
+
+        <table>
+            <tr>
+            <td>
+                <label>Export configuration <span style="color: red;" tal:condition="python:view.isDefault('export')">(default)</span></label>
+                <br/>
+                <textarea name="export" cols="80" rows="30"
+                    tal:content="python:view.getConfig('export')">
+                    config
+                </textarea>
+            </td>
+            <td>
+                <label>Import configuration <span style="color: red;" tal:condition="python:view.isDefault('import')">(default)</span></label>
+                <br/>
+                <textarea name="import" cols="80" rows="30" 
+                    tal:content="python:view.getConfig('import')">
+                    config
+                </textarea>
+            </td>
+        </table>
+        <input type="submit" name="action" value="Save" />
+    </form>
+
+</body>
+</html>

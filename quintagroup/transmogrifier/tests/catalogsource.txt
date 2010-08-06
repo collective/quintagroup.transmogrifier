@@ -1,0 +1,54 @@
+Catalog source section
+======================
+
+This is a source section that returns items queried from catalog. The catalog
+source section blueprint name is ``quintagroup.transmogrifier.catalogsource``.
+
+Catalog source section has next options:
+  - ``path-key' (default ``_path``) - key where object path is stored
+  - ``entries-key`` (default ``_entries``) - key where data for manifest section
+     is stored (tuple of contained items)
+
+All other options are assumed to be catalog query parameters, option name
+corresponds to index and its value is value for search or string representation
+of record object. Record object is a dictionary, which items are separeted by
+``;`` and key is separeted from value with ``=``.
+
+Test parsing os catalog query, which is given in section options (here we
+manually initialize section with that query).
+
+>>> from pprint import pprint
+>>> from quintagroup.transmogrifier.catalogsource import CatalogSourceSection
+>>> options = {'modified': 'query = 2008/11/02 12:00:00 GMT+0 ; range = min',
+...            'Type': 'Document',
+...            'blueprint': 'quintagroup.transmogrifier.catalogsource'}
+>>> section = CatalogSourceSection(transmogrifier, 'catalogsource', options, object())
+>>> pprint(section.query)
+{'Type': 'Document',
+ 'modified': {'query': '2008/11/02 12:00:00 GMT+0', 'range': 'min'}}
+
+Now test functionality of this section.
+
+>>> catalogsource = """
+... [transmogrifier]
+... pipeline =
+...     catalogsource
+...     printer
+...
+... [catalogsource]
+... blueprint = quintagroup.transmogrifier.catalogsource
+... modified = query = 2008-11-02T12:00:00Z; range = min
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.catalogsource',
+...                catalogsource)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.catalogsource') #doctest: +REPORT_NDIFF
+[('_entries', (('folder2', 'Folder'), ('folder1', 'Folder'))), ('_path', '')]
+[('_entries', (('document2', 'Document'), ('document3', 'Document'))),
+ ('_path', 'folder1')]
+[('_path', 'folder1/document2')]
+[('_path', 'folder1/document3')]
+[('_entries', (('document4', 'Document'),)), ('_path', 'folder2')]
+[('_path', 'folder2/document4')]

@@ -1,0 +1,219 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:transmogrifier="http://namespaces.plone.org/transmogrifier"
+    xmlns:gs="http://namespaces.zope.org/genericsetup"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="quintagroup.transmogrifier">
+
+    <include package="collective.transmogrifier" file="meta.zcml" />
+    <include package="collective.transmogrifier" />
+    <include package="plone.app.transmogrifier" />
+
+    <!-- register our blueprints -->
+    <utility
+        component=".sitewalker.SiteWalkerSection"
+        name="quintagroup.transmogrifier.sitewalker"
+        />
+
+    <utility
+        component=".manifest.ManifestExporterSection"
+        name="quintagroup.transmogrifier.manifestexporter"
+        />
+
+    <utility
+        component=".manifest.ManifestImporterSection"
+        name="quintagroup.transmogrifier.manifestimporter"
+        />
+
+    <utility
+        component=".marshall.MarshallerSection"
+        name="quintagroup.transmogrifier.marshaller"
+        />
+
+    <utility
+        component=".marshall.DemarshallerSection"
+        name="quintagroup.transmogrifier.demarshaller"
+        />
+
+    <utility
+        component=".propertymanager.PropertiesExporterSection"
+        name="quintagroup.transmogrifier.propertiesexporter"
+        />
+
+    <utility
+        component=".propertymanager.PropertiesImporterSection"
+        name="quintagroup.transmogrifier.propertiesimporter"
+        />
+
+    <utility
+        component=".comments.CommentsExporterSection"
+        name="quintagroup.transmogrifier.commentsexporter"
+        />
+
+    <utility
+        component=".comments.CommentsImporterSection"
+        name="quintagroup.transmogrifier.commentsimporter"
+        />
+
+    <utility
+        component=".datacorrector.DataCorrectorSection"
+        name="quintagroup.transmogrifier.datacorrector"
+        />
+
+    <!-- registration of adapters for data corrector section -->
+    <include package=".adapters" />
+
+    <utility
+        component=".writer.WriterSection"
+        name="quintagroup.transmogrifier.writer"
+        />
+
+    <utility
+        component=".reader.ReaderSection"
+        name="quintagroup.transmogrifier.reader"
+        />
+
+    <utility
+        component=".substitution.SubstitutionSection"
+        name="quintagroup.transmogrifier.substitution"
+        />
+
+    <utility
+        component=".xslt.XSLTSection"
+        name="quintagroup.transmogrifier.xslt"
+        />
+
+    <utility
+        component=".logger.LoggerSection"
+        name="quintagroup.transmogrifier.logger"
+        />
+
+    <utility
+        component=".references.ReferencesImporterSection"
+        name="quintagroup.transmogrifier.referencesimporter"
+        />
+
+    <utility
+        component=".binary.FileExporterSection"
+        name="quintagroup.transmogrifier.fileexporter"
+        />
+
+    <utility
+        component=".binary.FileImporterSection"
+        name="quintagroup.transmogrifier.fileimporter"
+        />
+
+    <utility
+        component=".catalogsource.CatalogSourceSection"
+        name="quintagroup.transmogrifier.catalogsource"
+        />
+
+    <utility
+        component=".flushcache.FlushCacheSection"
+        name="quintagroup.transmogrifier.flushcache"
+        provides="collective.transmogrifier.interfaces.ISectionBlueprint"
+        />
+
+    <utility
+        component=".interfacemanager.InterfacesExporterSection"
+        name="quintagroup.transmogrifier.interfacesexporter"
+        />
+
+    <utility
+        component=".interfacemanager.InterfacesImporterSection"
+        name="quintagroup.transmogrifier.interfacesimporter"
+        />
+
+    <utility
+        component=".portlets.PortletsExporterSection"
+        name="quintagroup.transmogrifier.portletsexporter"
+        />
+
+    <utility
+        component=".portlets.PortletsImporterSection"
+        name="quintagroup.transmogrifier.portletsimporter"
+        />
+
+    <adapter factory=".portlets.PortletAssignmentExportImportHandler" />
+
+    <transmogrifier:registerConfig
+        name="export"
+        title="Export pipeline configuration"
+        description="This is a Plone content export pipeline configuration."
+        configuration="export.cfg"
+        />
+
+    <!-- We registry this export step in zcml and it will override Plone's standard 
+         Content export step. Than we need to go in ZMI to Manage tab of portal_setup
+         tool and delete old step. (I also detected that steps registered in zcml
+         overriede those registered in profile without deleting them on manage tab)
+    -->
+    <gs:exportStep
+        name="content_quinta"
+        title="Content (transmogrifier)"
+        description="Export the site's structure and content."
+        handler=".exportimport.exportSiteStructure"
+        />
+
+    <transmogrifier:registerConfig
+        name="import"
+        title="Import pipeline configuration"
+        description="This is a Plone content import pipeline configuration."
+        configuration="import.cfg"
+        />
+
+    <!-- With import step we can't do the same. Plone's portal_setup tool currently
+         works such that if we delete standard Content import step on Manage tab
+         it will be recreated when rendering Import tab. (also this step is overriden
+         when we import all steps, but old handler is used if we select only content
+         step).
+
+         <gs:importStep
+            name="content_quinta"
+            title="Content (transmogrifier)"
+            description="Import the site's structure and content."
+            handler=".exportimport.importSiteStructure"
+            />
+
+         That's why we can go another way and register adapter which is looked up in
+         standard handler.
+
+         <adapter
+            for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+            provides="Products.GenericSetup.interfaces.IFilesystemImporter"
+            factory=".exportimport.PloneSiteImporter"
+            />
+    -->
+
+    <gs:importStep
+        name="content_quinta"
+        title="Content (transmogrifier)"
+        description="Import the site's structure and content."
+        handler=".exportimport.importSiteStructure"
+        />
+
+    <browser:page
+        name="pipeline-config"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        permission="zope2.ViewManagementScreens"
+        class=".configview.PipelineConfigView"
+        template="pipelineconfig.pt"
+        />
+
+    <gs:registerProfile
+        name="default"
+        title="quintagroup.transmogrifier (adds Content Migration configlet)"
+        directory="profiles/default"
+        description="Profile that adds Content Migration configlet."
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+    <!-- Apply marker interface for Plone < 4 -->
+    <five:implements
+        class="Products.Archetypes.Field.ObjectField"
+        interface="Products.Archetypes.interfaces.IObjectField"
+        />
+
+</configure>

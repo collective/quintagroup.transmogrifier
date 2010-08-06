@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?><metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+	<dc:title>
+		Events
+	</dc:title>
+	<dc:description>
+		Site Events
+	</dc:description>
+	<dc:creator>
+		portal_owner
+	</dc:creator>
+	<dc:language>
+		en
+	</dc:language>
+	<xmp:CreateDate>
+		2010-01-01T14:00:00Z
+	</xmp:CreateDate>
+	<xmp:ModifyDate>
+		2010-01-01T14:00:00Z
+	</xmp:ModifyDate>
+	<field mimetype="text/plain" name="id">
+		events
+	</field>
+	<field mimetype="text/plain" name="constrainTypesMode">
+		1
+	</field>
+	<field mimetype="text/plain" name="locallyAllowedTypes">
+		Event
+	</field>
+	<field mimetype="text/plain" name="immediatelyAddableTypes">
+		Event
+	</field>
+	<uid>
+		/plone/events
+	</uid>
+	<cmf:type>
+		Folder
+	</cmf:type>
+	<cmf:security>
+		<cmf:local_role role="Owner" user_id="portal_owner"/>
+	</cmf:security>
+</metadata>

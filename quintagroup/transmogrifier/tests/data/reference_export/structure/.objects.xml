@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+  <record type="Document">
+    front-page
+  </record>
+  <record type="Folder">
+    news
+  </record>
+  <record type="Folder">
+    events
+  </record>
+  <record type="Folder">
+    Members
+  </record>
+</manifest>

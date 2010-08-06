@@ -1,0 +1,7 @@
+TODO
+====
+
+- Remove importing of object UIDs
+
+- Rewrite ReferenceExporter adapter as pipeline section and merge code from
+  ReferenceImporter adapter to reference importer section.

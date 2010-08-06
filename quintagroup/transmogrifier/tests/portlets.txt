@@ -1,0 +1,213 @@
+Portlets exporter and importer sections
+=======================================
+
+Portlets exporter and importer sections are used to migrate Plone 3 contextual 
+portlet assignments and blacklist settings.
+The portlets exporter section blueprint name is
+``quintagroup.transmogrifier.portletsexporter`` and importer section blueprint
+name is ``quintagroup.transmogrifier.portletsimporter``.
+
+Portlet assignments and blacklists are stored in XML format. Both sections need 
+relative path to the object with portlets assigned and importer also needs XML 
+data for updating them.
+
+Both sections has ``path-key`` option which specifies key in item where path to
+object is stored (``_path`` is default) and ``files-key`` option that gives
+key where XML data will be or is stored.
+
+>>> import pprint
+>>> portlets = """
+... [transmogrifier]
+... pipeline =
+...     portletssource
+...     portletsexporter
+...     printer
+...     dataprinter
+...     portletsimporter
+...     
+... [portletssource]
+... blueprint = quintagroup.transmogrifier.tests.portletssource
+... 
+... [portletsexporter]
+... blueprint = quintagroup.transmogrifier.portletsexporter
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... 
+... [dataprinter]
+... blueprint = quintagroup.transmogrifier.tests.dataprinter
+... print = 
+...     _files
+...     portlets
+...     data
+... 
+... [portletsimporter]
+... blueprint = quintagroup.transmogrifier.portletsimporter
+... files-key = files
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.portlets', portlets)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.portlets') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[]
+[('_path', 'not/existing/bar')]
+[('_path', 'spam/eggs/notassignable')]
+[('_files',
+  {'portlets': {'data': ...
+                'name': '.portlets.xml'}}),
+ ('_path', 'assignable')]
+<?xml version="1.0" encoding="utf-8"?>
+<portlets>
+  <assignment category="context" key="/assignable" manager="plone.leftcolumn" name="rss" type="portlets.rss">
+    <property name="count">
+      10
+    </property>
+    <property name="url">
+      http://sumno.com/feeds/main-page/
+    </property>
+    <property name="portlet_title">
+      RSS feed
+    </property>
+    <property name="timeout">
+      60
+    </property>
+  </assignment>
+  <blacklist category="user" manager="plone.leftcolumn" status="block"/>
+  <blacklist category="group" manager="plone.leftcolumn" status="acquire"/>
+  <blacklist category="content_type" manager="plone.leftcolumn" status="acquire"/>
+  <blacklist category="context" manager="plone.leftcolumn" status="acquire"/>
+</portlets>
+<BLANKLINE>
+[('_files',
+  {'portlets': {'data': ...
+                'name': '.portlets.xml'}}),
+ ('_path', 'other-assignable'),
+ ('files',
+  {'portlets': {'data': ...
+                'name': '.portlets.xml'}})]
+<?xml version="1.0" encoding="utf-8"?>
+<portlets>
+  <assignment category="context" key="/other-assignable" manager="plone.leftcolumn" name="rss" type="portlets.rss">
+    <property name="count">
+      10
+    </property>
+    <property name="url">
+      http://sumno.com/feeds/main-page/
+    </property>
+    <property name="portlet_title">
+      RSS feed
+    </property>
+    <property name="timeout">
+      60
+    </property>
+  </assignment>
+  <blacklist category="user" manager="plone.leftcolumn" status="block"/>
+  <blacklist category="group" manager="plone.leftcolumn" status="acquire"/>
+  <blacklist category="content_type" manager="plone.leftcolumn" status="acquire"/>
+  <blacklist category="context" manager="plone.leftcolumn" status="acquire"/>
+</portlets>
+<BLANKLINE>
+
+
+New portlet must be added to existent ones.
+
+>>> 'habra-rss' in mapping
+True
+>>> mapping['habra-rss'].count
+20
+>>> mapping['habra-rss'].url
+u'http://habrahabr.ru/rss/'
+>>> mapping['habra-rss'].portlet_title
+u'Habrahabr RSS feed'
+>>> mapping['habra-rss'].timeout
+120
+>>> 'rss' in mapping
+True
+>>> mapping['rss'].count
+10
+>>> mapping['rss'].url
+u'http://sumno.com/feeds/main-page/'
+>>> mapping['rss'].portlet_title
+u'RSS feed'
+>>> mapping['rss'].timeout
+60
+
+
+Export sections has also ``purge`` option which specifies if portlets must
+be purged before exporting. The ``purge`` option set to ``False`` by default
+and not purge existent portlets. To force purging - it must be set to ``True``.
+
+>>> portlets2 = """
+... [transmogrifier]
+... pipeline =
+...     portletssource
+...     portletsexporter
+...     printer
+...     dataprinter
+...     portletsimporter
+...     
+... [portletssource]
+... blueprint = quintagroup.transmogrifier.tests.portletssource2
+... 
+... [portletsexporter]
+... blueprint = quintagroup.transmogrifier.portletsexporter
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... 
+... [dataprinter]
+... blueprint = quintagroup.transmogrifier.tests.dataprinter
+... print = 
+...     _files
+...     portlets
+...     data
+... 
+... [portletsimporter]
+... blueprint = quintagroup.transmogrifier.portletsimporter
+... files-key = files
+... purge = True
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.portlets2', portlets2)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.portlets2') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[]
+[('_files',
+  {'portlets': {'data': ...
+                'name': '.portlets.xml'}}),
+ ('_path', 'other-assignable'),
+ ('files',
+  {'portlets': {'data': ...
+                'name': '.portlets.xml'}})]
+<?xml version="1.0" encoding="utf-8"?>
+<portlets>
+  <assignment category="context" key="/other-assignable" manager="plone.leftcolumn" name="rss" type="portlets.rss">
+    <property name="count">
+      10
+    </property>
+    <property name="url">
+      http://sumno.com/feeds/main-page/
+    </property>
+    <property name="portlet_title">
+      RSS feed
+    </property>
+    <property name="timeout">
+      60
+    </property>
+  </assignment>
+  <assignment category="context" key="/other-assignable" manager="plone.leftcolumn" name="habra-rss" type="portlets.rss">
+    <property name="count">
+      20
+    </property>
+    <property name="url">
+      http://habrahabr.ru/rss/
+    </property>
+    <property name="portlet_title">
+      Habrahabr RSS feed
+    </property>
+    <property name="timeout">
+      120
+    </property>
+  </assignment>
+  <blacklist category="user" manager="plone.leftcolumn" status="block"/>
+  <blacklist category="group" manager="plone.leftcolumn" status="acquire"/>
+  <blacklist category="content_type" manager="plone.leftcolumn" status="acquire"/>
+  <blacklist category="context" manager="plone.leftcolumn" status="acquire"/>
+</portlets>
+<BLANKLINE>

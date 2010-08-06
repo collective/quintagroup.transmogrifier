@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<portlets>
+  <blacklist category="user" manager="plone.dashboard2" status="acquire"/>
+  <blacklist category="group" manager="plone.dashboard2" status="acquire"/>
+  <blacklist category="content_type" manager="plone.dashboard2" status="acquire"/>
+  <blacklist category="context" manager="plone.dashboard2" status="acquire"/>
+  <blacklist category="user" manager="plone.dashboard3" status="acquire"/>
+  <blacklist category="group" manager="plone.dashboard3" status="acquire"/>
+  <blacklist category="content_type" manager="plone.dashboard3" status="acquire"/>
+  <blacklist category="context" manager="plone.dashboard3" status="acquire"/>
+  <blacklist category="user" manager="plone.dashboard1" status="acquire"/>
+  <blacklist category="group" manager="plone.dashboard1" status="acquire"/>
+  <blacklist category="content_type" manager="plone.dashboard1" status="acquire"/>
+  <blacklist category="context" manager="plone.dashboard1" status="acquire"/>
+  <blacklist category="user" manager="plone.dashboard4" status="acquire"/>
+  <blacklist category="group" manager="plone.dashboard4" status="acquire"/>
+  <blacklist category="content_type" manager="plone.dashboard4" status="acquire"/>
+  <blacklist category="context" manager="plone.dashboard4" status="acquire"/>
+  <blacklist category="user" manager="plone.leftcolumn" status="acquire"/>
+  <blacklist category="group" manager="plone.leftcolumn" status="acquire"/>
+  <blacklist category="content_type" manager="plone.leftcolumn" status="acquire"/>
+  <blacklist category="context" manager="plone.leftcolumn" status="acquire"/>
+  <blacklist category="user" manager="plone.rightcolumn" status="acquire"/>
+  <blacklist category="group" manager="plone.rightcolumn" status="acquire"/>
+  <blacklist category="content_type" manager="plone.rightcolumn" status="acquire"/>
+  <blacklist category="context" manager="plone.rightcolumn" status="acquire"/>
+</portlets>

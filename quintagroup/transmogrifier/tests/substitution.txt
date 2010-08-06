@@ -1,0 +1,37 @@
+Substitution section
+====================
+
+A substitution pipeline section lets you substitute item's value stored
+on some key with value given in options. The substitution section blueprint
+name is ``quintagroup.transmogrifier.substitution``.
+
+Substition is performed in this way: if section has option with name that
+is equal to value stored on this key, than value of this option is used
+as new value for this key. Old value is stored on ``_old${key}`` key.
+Which key to use is determined by ``key`` option.
+
+>>> substitution = """
+... [transmogrifier]
+... pipeline =
+...     source
+...     substitution
+...     printer
+... 
+... [source]
+... blueprint = quintagroup.transmogrifier.tests.substitutionsource
+... 
+... [substitution]
+... blueprint = quintagroup.transmogrifier.substitution
+... key = _type
+... Blog = Weblog
+... PloneFormMailer = FormFolder
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.substitution', substitution)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.substitution') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[]
+[('_old_type', 'Blog'), ('_type', 'Weblog')]
+[('_old_type', 'PloneFormMailer'), ('_type', 'FormFolder')]
+[('_type', 'Document')]

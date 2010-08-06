@@ -1,0 +1,21 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five">
+
+    <!-- 'marshall' adapters -->
+    <adapter
+        factory=".exporting.ReferenceExporter"
+        name="marshall"
+        />
+
+    <adapter
+        factory=".importing.ReferenceImporter"
+        name="marshall"
+        />
+
+    <adapter
+        factory=".exporting.CriterionExporter"
+        name="marshall"
+        />
+
+</configure>

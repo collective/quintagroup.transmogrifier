@@ -1,0 +1,72 @@
+Marshaller and demarshaller sections
+====================================
+
+Marshaller and demarshaller sections are used to serialize content in XML data
+of update it from it with the help of Marshall 1.0.0 Plone product. The
+marshaller section blueprint name is ``quintagroup.transmogrifier.marshaller``
+and the demarshaller section blueprint name is
+``quintagroup.transmogrifier.demarshaller``.
+
+Marshaller needs relative path to the object to serialize in XML format.
+Demarshaller needs path and XML data for updating object. Both sections use
+Marshall products internals and serialize/deserialize content with the use of
+``atxml`` component (this is not Zope 3 component, Marshall calls it's handlers
+components).
+
+Both sections has ``path-key`` option which specify key in item where path to
+object is stored (``_path`` is default) and ``files-key`` option that gives
+key where XML data will be or is stored. Marshaller section also has ``exclude``
+option that give global list of Archetypes fields to exclude on serializing and
+``exclude-key`` option, that specifies key where same list per item is stored
+(default is ``_excluded_fields``). Fields that are in any of these lists are
+excluded.
+
+>>> import pprint
+>>> marshall = """
+... [transmogrifier]
+... pipeline =
+...     marshallsource
+...     marshall
+...     demarshaller
+...     printer
+...     
+... [marshallsource]
+... blueprint = quintagroup.transmogrifier.tests.marshallsource
+... 
+... [marshall]
+... blueprint = quintagroup.transmogrifier.marshaller
+... exclude =
+...     text
+... 
+... [demarshaller]
+... blueprint = quintagroup.transmogrifier.demarshaller
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.marshall', marshall)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.marshall') # doctest: +REPORT_NDIFF
+[]
+[('_excluded_fields', ('file', 'image')),
+ ('_files', {'marshall': {'data': 'marshalled', 'name': '.marshall.xml'}}),
+ ('_path', 'spam/eggs/foo')]
+[('_files', {'marshall': {'data': None, 'name': '.marshall.xml'}}),
+ ('_path', 'topic/criterion')]
+[('_path', 'not/existing/bar')]
+[('_files', {'marshall': {'data': 'xml', 'name': '.marshall.xml'}}),
+ ('_path', 'spam/eggs/notatcontent')]
+
+>>> pprint.pprint(plone.marshalled)
+(('spam/eggs/foo', ('text', 'image', 'file')), ('topic/criterion', ('text',)))
+>>> pprint.pprint(plone.demarshalled)
+('spam/eggs/foo', 'topic/criterion')
+>>> pprint.pprint(plone.indexed+plone.criterion.indexed)
+('spam/eggs/foo', 'topic/criterion')
+>>> plone.updatedRoles
+True
+>>> plone.reindexed
+True
+>>> plone.fields['effectiveDate']
+'changed'
+>>> plone.criterion.fields['effectiveDate']
+'not changed'

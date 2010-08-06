@@ -1,0 +1,77 @@
+Properties exporter and importer sections
+=========================================
+
+Properties exporter and importer sections are used to migrate properties for
+objects that inherit from OFS.PropertyManager.PropertyManager mixin class.
+The properties exporter section blueprint name is
+``quintagroup.transmogrifier.propertiesexporter`` and importer section blueprint
+name is ``quintagroup.transmogrifier.propertiesimporter``.
+
+Properties are represented in XML format and this is done with help of
+GenericSetup.utils.PropertyManagerHelpers class. Both sections need relative
+path to the object with properties and importer also needs XML data for updating
+properties.
+
+Both sections has ``path-key`` option which specifies key in item where path to
+object is stored (``_path`` is default) and ``files-key`` option that gives
+key where XML data will be or is stored. Exporter section also has ``exclude``
+option that give global list of property ids to exclude on serializing and
+``exclude-key`` option, that specifies key where same list per item is stored
+(default is ``_excluded_properties``). Properties that are present in any of
+these lists are excluded.
+
+>>> import pprint
+>>> propertymanager = """
+... [transmogrifier]
+... pipeline =
+...     propertymanagersource
+...     propertiesexporter
+...     printer
+...     dataprinter
+...     propertiesimporter
+...     
+... [propertymanagersource]
+... blueprint = quintagroup.transmogrifier.tests.propertymanagersource
+... 
+... [propertiesexporter]
+... blueprint = quintagroup.transmogrifier.propertiesexporter
+... exclude = 
+...     title
+...     notexistentprop
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... 
+... [dataprinter]
+... blueprint = quintagroup.transmogrifier.tests.dataprinter
+... print = 
+...     _files
+...     propertymanager
+...     data
+... 
+... [propertiesimporter]
+... blueprint = quintagroup.transmogrifier.propertiesimporter
+... exclude = author
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.propertymanager', propertymanager)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.propertymanager') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[]
+[('_path', 'not/existing/bar')]
+[('_path', 'spam/eggs/notatcontent')]
+[('_excluded_properties', ('encoding',)),
+ ('_files',
+  {'propertymanager': {'data': '<?xml version="1.0" encoding="utf-8"?>\n<properties>\n  <property name="description">\n    value\n  </property>\n  <property name="author">\n    value\n  </property>\n</properties>\n',
+                       'name': '.properties.xml'}}),
+ ('_path', 'spam/eggs/foo')]
+<?xml version="1.0" encoding="utf-8"?>
+<properties>
+  <property name="description">
+    value
+  </property>
+  <property name="author">
+    value
+  </property>
+</properties>
+<BLANKLINE>
+>>> pprint.pprint(plone.updated)
+('spam/eggs/foo', 'description', 'value')

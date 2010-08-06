@@ -1,0 +1,8 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="quintagroup.transmogrifier">
+
+  <include package="quintagroup.transmogrifier" />
+
+</configure>

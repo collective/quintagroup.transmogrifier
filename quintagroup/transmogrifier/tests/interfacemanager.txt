@@ -1,0 +1,81 @@
+Interfaces exporter and importer sections
+=========================================
+
+Interfaces exporter and importer sections are used to migrate interfaces for
+objects.
+The interfaces exporter section blueprint name is
+``quintagroup.transmogrifier.interfacesexporter`` and importer section blueprint
+name is ``quintagroup.transmogrifier.interfacesimporter``.
+
+Interfaces are represented in XML format. Both sections need relative
+path to the object with interfaces and importer also needs XML data for updating
+interfaces provided by object.
+
+Both sections has ``path-key`` option which specifies key in item where path to
+object is stored (``_path`` is default) and ``files-key`` option that gives
+key where XML data will be or is stored. Also there are ``include`` and
+``exclude`` options that give global list of interface identifiers to include or
+exclude on serializing. There are correspondent ``include-key``, ``exclude-key``
+options, that specifies key where same lists per item is stored (default is
+``_included_interfaces`` & ``_excluded_interfaces``). These options give you
+alternative way to manage interfaces to serialize and apply to the object.
+``include`` option - include only interfaces, listed in, and ``exclude`` option
+behave in opposite way. If both options present - only ``include`` option get
+into consideration. If both options is absent - all interfaces will be
+serialized and/or migrated.
+Exporter section exports only Interfaces directly provided by object, so in such
+way we prevent confusion with interfaces, implemented by class itself.
+
+>>> import pprint
+>>> interfacemanager = """
+... [transmogrifier]
+... pipeline =
+...     interfacemanagersource
+...     interfacesexporter
+...     printer
+...     dataprinter
+...     interfacesimporter
+...     
+... [interfacemanagersource]
+... blueprint = quintagroup.transmogrifier.tests.interfacemanagersource
+... 
+... [interfacesexporter]
+... blueprint = quintagroup.transmogrifier.interfacesexporter
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... 
+... [dataprinter]
+... blueprint = quintagroup.transmogrifier.tests.dataprinter
+... print = 
+...     _files
+...     interfaces
+...     data
+... 
+... [interfacesimporter]
+... blueprint = quintagroup.transmogrifier.interfacesimporter
+... include =
+...     zope.annotation.interfaces.IAttributeAnnotatable
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.interfacemanager', interfacemanager)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.interfacemanager') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[]
+[('_path', 'not/existing/bar')]
+[('_path', 'spam/eggs/notatcontent')]
+[('_files',
+  {'interfaces': {'data': '<?xml version="1.0" encoding="utf-8"?>\n<interfaces>\n  <record>\n    zope.annotation.interfaces.IAttributeAnnotatable\n  </record>\n  <record>\n    zope.interface.Interface\n  </record>\n</interfaces>\n',
+                  'name': '.interfaces.xml'}}),
+ ('_path', 'spam/eggs/foo')]
+<?xml version="1.0" encoding="utf-8"?>
+<interfaces>
+  <record>
+    zope.annotation.interfaces.IAttributeAnnotatable
+  </record>
+  <record>
+    zope.interface.Interface
+  </record>
+</interfaces>
+<BLANKLINE>
+
+>>> pprint.pprint(updated)
+['zope.annotation.interfaces.IAttributeAnnotatable']

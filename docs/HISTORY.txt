@@ -1,0 +1,27 @@
+Changelog
+=========
+
+0.3 (Unreleased)
+----------------
+
+ - added sections for export/import of portlet assignments [koval]
+
+0.2 (2010-01-04)
+----------------
+
+ - the "quintagroup.transmogrifier" namespace removed [koval]
+
+ - added interface import/export steps [mylan]
+
+ - merged plone21 branch [piv]
+
+ - various fixes [piv, mylan, koval]
+
+ - history update, release [chervol]
+
+
+0.1 (2009-11-19)
+----------------
+
+ - Initial release
+

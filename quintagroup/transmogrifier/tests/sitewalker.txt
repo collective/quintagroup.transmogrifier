@@ -1,0 +1,55 @@
+Site walker source section
+==========================
+
+A Plone site walker source pipeline section lets you create pipeline items from
+contents of Plone site folders. The site walker source section blueprint name is
+``quitagroup.transmogrifier.sitewalker``.
+
+A site walker source section will recurse through site's content tree, starting 
+form folder, which is the context of transmogrifier, and will yield an item for
+each content object. For folder it will also add a tuple of (id, portal_type)
+pairs of contained items.
+
+You can also specify an optional ``condition`` option; if given, content object
+is going into pipeline only if the condition, which is also a TALES is true.
+
+>>> sitewalker = """
+... [transmogrifier]
+... pipeline =
+...     sitewalker
+...     printer
+...
+... [sitewalker]
+... blueprint = quintagroup.transmogrifier.sitewalker
+... condition = python:context.getPortalTypeName() not in ('File', 'Image')
+...
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.sitewalker',
+...                sitewalker)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.sitewalker')
+[('_entries',
+  (('document1', 'Document'),
+   ('folder1', 'Folder'),
+   ('document3', 'Document'))),
+ ('_path', ''),
+ ('_type', 'MockPortal')]
+[('_path', 'document1'), ('_type', 'Document')]
+[('_entries', (('folder2', 'Folder'), ('document2', 'Document'))),
+ ('_path', 'folder1'),
+ ('_type', 'Folder')]
+[('_path', 'folder1/folder2'), ('_type', 'Folder')]
+[('_path', 'folder1/document2'), ('_type', 'Document')]
+[('_path', 'document3'), ('_type', 'Document')]
+
+
+The ``condition`` expression has an access to the following:
+
+=================== ==========================================================
+ ``context``         the current content object
+ ``transmogrifier``  the transmogrifier
+ ``name``            the name of the splitter section
+ ``options``         the splitter options
+ ``modules``         sys.modules
+=================== ==========================================================

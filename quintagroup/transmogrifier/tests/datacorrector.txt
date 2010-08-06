@@ -1,0 +1,58 @@
+Data corrector section
+======================
+
+A data corrector section lets you use context sensitive components (adapters)
+to do needed corrections in data generated in previous sections. The data
+corrector section blueprint name is ``quintagroup.transmogrifier.datacorrector``.
+
+Data corrector needs next information: the path to the object (context), the
+key in item on which is stored contaired with data from previous sections and
+sources -  list of keys in this container which points to data, that need to
+be corrected. Every key in this list is also a name of adapter to lookup.
+
+Adapter are of two types: ``export`` and ``import``. What to use is controlled
+by ``type`` option, ``export`` is default value.
+
+Paths to objects are always interpreted as relative to the context.
+
+>>> datacorrector = """
+... [transmogrifier]
+... pipeline =
+...     source
+...     exportcorrector
+...     importcorrector
+...     printer
+...     
+... [source]
+... blueprint = quintagroup.transmogrifier.tests.datacorrectorsource
+... 
+... [exportcorrector]
+... blueprint = quintagroup.transmogrifier.datacorrector
+... sources = marshall
+... 
+... [importcorrector]
+... blueprint = quintagroup.transmogrifier.datacorrector
+... type = import
+... sources = 
+...     manifest
+...     unchanged
+...     nodata
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... 
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.datacorrector', datacorrector)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.datacorrector') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[]
+[('_files', {'marshall': "item hasn't path"})]
+[('_path', 'spam/eggs/foo')]
+[('_path', 'not/existing/bar')]
+[('_files', {'marshall': "object isn't adaptable"}),
+ ('_path', 'spam/eggs/notadaptable')]
+[('_files',
+  {'marshall': 'modified export data', 'unchanged': 'this must be unchanged'}),
+ ('_path', 'spam/eggs/foo')]
+[('_files',
+  {'manifest': 'modified import data', 'unchanged': 'this must be unchanged'}),
+ ('_path', 'spam/eggs/foo')]

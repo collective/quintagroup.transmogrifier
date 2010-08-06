@@ -1,0 +1,34 @@
+Flush cache section
+===================
+
+A flushcache pipeline section flushes zope cache every so often, which has an
+effect of freeing up memory. This section is useful while performing migration
+on a weak system with a low memory. The flushcache section blueprint name is
+``quintagroup.transmogrifier.flushcache``.
+
+A flushcache section takes an optional ``every`` option, which defaults to
+1000; cache is being flushed every ``every`` items passing through the pipe.
+A flushcache section doesn't alter the items in any way:
+
+>>> flushcache = """
+... [transmogrifier]
+... pipeline =
+...     source
+...     flushcache
+...     
+... [source]
+... blueprint = collective.transmogrifier.sections.tests.rangesource
+... size = 10
+... 
+... [flushcache]
+... blueprint = quintagroup.transmogrifier.flushcache
+... every = 3
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.flushcache', flushcache)
+
+We'll show caching is flushed using dedicated variable on dummy plone instance
+called 'cacheMinimized'. Which is a number of caches performed.
+
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.flushcache')
+>>> transmogrifier.context.cacheMinimized
+3

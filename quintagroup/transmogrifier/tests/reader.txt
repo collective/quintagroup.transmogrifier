@@ -1,0 +1,109 @@
+Reader section
+==============
+
+A reader source pipeline section walks through different GenericSetup
+import contexts and yields items for every folder. Item contains it's
+path stored on a key given in ``path-key`` option and dictionary of
+data of files, contained in directory to which this item corresponds,
+stored on a key given in ``files-key`` option. The reader section blueprint
+name is ``quintagroup.transmogrifier.reader``.
+
+Which import context to use is controlled by ``context`` option. Possible
+values are: directory, tarball (default if option is absent or it's illegal)
+and snapshot. The only required option in this section is ``path`` which
+is a filesystem path of directory or archive for first two contexts, or
+snapshot's id for last context. Other usefull option is ``prefix`` which
+is additional path that must be added to ``path`` (it was designed to
+be used for tarball context, where content lives in 'structure' subdirectory,
+but may be used for other two too). Also note that ``prefix`` isn't added
+to generated item's path.
+
+Reader reads files and adds to ``item[files-key]`` dictionary with file's data
+and name. This dictionary is stored on a key, that identifies to which section
+this file corresponds. Mapping between filenames and sections is defined in
+reader section options. Option name is filename and option value is section name.
+
+>>> reader = """
+... [transmogrifier]
+... pipeline =
+...     reader
+...     printer
+... 
+... [reader]
+... blueprint = quintagroup.transmogrifier.reader
+... prefix = structure
+... .objects.xml = manifest
+... .marshall.xml = marshall
+... .properties.xml = propertymanager
+... .comments.xml = comments
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.reader', reader)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.reader') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[('_files',
+  {'other.file': {'data': 'some data', 'name': 'other.file'},
+   'propertymanager': {'data': 'some data', 'name': '.properties.xml'}}),
+ ('_import_context',
+  <Tarball args=(...),
+ ('_path', '')]
+[('_files', {'manifest': {'data': 'some data', 'name': '.objects.xml'}}),
+ ('_import_context',
+  <Tarball args=(...)>),
+ ('_path', 'news')]
+[('_import_context',
+  <Tarball args=(...)>),
+ ('_path', 'news/recent')]
+[('_files', {'manifest': {'data': 'some data', 'name': '.objects.xml'}}),
+ ('_import_context',
+  <Tarball args=(...)>),
+ ('_path', 'pages')]
+[('_files',
+  {'comments': {'data': 'some data', 'name': '.comments.xml'},
+   'marshall': {'data': 'some data', 'name': '.marshall.xml'}}),
+ ('_import_context',
+  <Tarball args=(...)>),
+ ('_path', 'pages/front-page')]
+
+Now we test if reader context is properly controlled by ``context`` option.
+
+>>> dirreader = """
+... [transmogrifier]
+... pipeline =
+...     reader
+...     printer
+... 
+... [reader]
+... blueprint = quintagroup.transmogrifier.reader
+... context = directory
+... path = /path/to/directory
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.dirreader', dirreader)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.dirreader') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[('_import_context',
+  <Directory args=(..., '/path/to/directory')>),
+ ('_path', '')]
+
+>>> dbreader = """
+... [transmogrifier]
+... pipeline =
+...     reader
+...     printer
+... 
+... [reader]
+... blueprint = quintagroup.transmogrifier.reader
+... context = snapshot
+... path = snapshot-20081008163000
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.dbreader', dbreader)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.dbreader') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[('_import_context',
+  <Snapshot args=(..., 'snapshot-...')>),
+ ('_path', '')]

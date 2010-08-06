@@ -1,0 +1,103 @@
+Writer section
+==============
+
+A writer pipeline section is used to store files in different GenericSetup
+export contexts. The writer section blueprint name is 
+``quintagroup.transmogrifier.writer``.
+
+>>> writer = """
+... [transmogrifier]
+... pipeline =
+...     writersource
+...     writer
+...     dataprinter
+...     
+... [writersource]
+... blueprint = quintagroup.transmogrifier.tests.writersource
+... 
+... [writer]
+... blueprint = quintagroup.transmogrifier.writer
+... prefix = structure
+... 
+... [dataprinter]
+... blueprint = quintagroup.transmogrifier.tests.dataprinter
+... prettyprint = true
+... print = 
+...     _export_context
+...     _wrote
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.writer', writer)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.writer') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[('structure/spam/eggs/foo/.second.xml', 'other data', 'text/xml'),
+ ('structure/spam/eggs/foo/.first.xml', 'some data', 'text/xml')]
+[('structure/spam/eggs/foo/.second.xml', 'other data', 'text/xml'),
+ ('structure/spam/eggs/foo/.first.xml', 'some data', 'text/xml'),
+ ('structure/other/path/.third.xml', 'some data', 'text/xml')]
+
+Now we test if writer context is properly controlled by ``context`` option.
+
+>>> writerdefault = """
+... [transmogrifier]
+... pipeline =
+...     source
+...     writer
+...     printer
+...     
+... [source]
+... blueprint = quintagroup.transmogrifier.tests.singleitemsource
+... 
+... [writer]
+... blueprint = quintagroup.transmogrifier.writer
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.writerdefault', writerdefault)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdefault') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[('_export_context',
+  <Tarball args=(...) _wrote=[]>),
+ ('_files', {}),
+ ('_path', '')]
+
+>>> writerdir = """
+... [transmogrifier]
+... include = quintagroup.transmogrifier.tests.writerdefault
+... 
+... [writer]
+... context = directory
+... path = content
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.writerdir', writerdir)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdir') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[('_export_context',
+  <Directory args=(..., 'content') _wrote=[]>),
+ ('_files', {}),
+ ('_path', '')]
+
+>>> writertar = """
+... [transmogrifier]
+... include = quintagroup.transmogrifier.tests.writerdefault
+...
+... [writer]
+... context = tarball
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.writertar', writertar)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.writertar') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[('_export_context',
+  <Tarball args=(...) _wrote=[]>),
+ ('_files', {}),
+ ('_path', '')]
+
+>>> writerdb = """
+... [transmogrifier]
+... include = quintagroup.transmogrifier.tests.writerdefault
+...
+... [writer]
+... context = snapshot
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.writerdb', writerdb)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdb') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[('_export_context',
+  <Snapshot args=(...) _wrote=[]>),
+ ('_files', {}),
+ ('_path', '')]

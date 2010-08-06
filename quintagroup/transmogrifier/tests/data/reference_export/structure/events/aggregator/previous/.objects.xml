@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+  <record type="ATSortCriterion">
+    crit__end_ATSortCriterion
+  </record>
+  <record type="ATDateCriteria">
+    crit__end_ATFriendlyDateCriteria
+  </record>
+</manifest>

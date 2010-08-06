@@ -1,0 +1,96 @@
+File fields exporter and importer sections
+==========================================
+
+File fields importer and exporter sections are used to extract data from
+Archetypes file fields. The exporter section blueprint name is
+``quintagroup.transmogrifier.fileexporter`` and the importer section blueprint
+name is ``quintagroup.transmogrifier.fileimporter``.
+
+Exporter needs relative path to the object, that have file fields. Improter
+needs path and data for updating fields.
+
+Both sections has ``path-key`` option which specify key in item where path to
+object is stored (``_path`` is default) and ``files-key`` option that gives
+key where XML data will be or is stored. Exporter section also has ``exclude-key``
+option, that specifies key where list of file field names will be stored
+(default is ``_excluded_fields``). These list will be used in marshaller
+section.
+
+Also this section provides condition option which, if specified, exports/imports
+this or another binary field only if condition expression evaluates to true.
+
+>>> import pprint
+>>> binary = """
+... [transmogrifier]
+... pipeline =
+...     binarysource
+...     fileexporter
+...     fileimporter
+...     printer
+...     dataprinter
+... 
+... [binarysource]
+... blueprint = quintagroup.transmogrifier.tests.binarysource
+... 
+... [fileexporter]
+... blueprint = quintagroup.transmogrifier.fileexporter
+... condition = python:fname != 'image'
+... 
+... [dataprinter]
+... blueprint = quintagroup.transmogrifier.tests.dataprinter
+... print = 
+...     _files
+...     file-fields
+...     data
+... 
+... [fileimporter]
+... blueprint = quintagroup.transmogrifier.fileimporter
+... 
+... [printer]
+... blueprint = collective.transmogrifier.sections.tests.pprinter
+... """
+>>> registerConfig(u'quintagroup.transmogrifier.tests.marshall', binary)
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.marshall') # doctest: +REPORT_NDIFF, +ELLIPSIS
+[]
+[('_path', 'not/existing/bar')]
+[('_path', 'spam/eggs/notatcontent')]
+[('_excluded_fields', ['image', 'file']),
+ ('_files',
+  {'archive.tar.gz': {'content_type': 'application/x-tar',
+                      'data': 'binary data',
+                      'name': 'archive.tar.gz'},
+   'file-fields': {'data': ...
+                   'name': '.file-fields.xml'}}),
+ ('_path', 'spam/eggs/foo')]
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+  <field name="file">
+    <filename>
+      archive.tar.gz
+    </filename>
+    <mimetype>
+      application/x-tar
+    </mimetype>
+  </field>
+</manifest>
+<BLANKLINE>
+
+>>> pprint.pprint(plone.updated)
+('archive.tar.gz', 'application/x-tar', 'binary data')
+
+TODO: write test for getting data for fields from import context
+
+The ``condition`` expression hass access to the following:
+
+=================== ==========================================================
+ ``item``            the current pipeline item
+ ``transmogrifier``  the transmogrifier
+ ``name``            the name of the splitter section
+ ``options``         the splitter options
+ ``modules``         sys.modules
+ ``context``         the current content object
+ ``fname``           the name of the field being processed
+ ``filename``        the file name binary field is loaded into (import only)
+ ``data``            data read from the file (import only)
+ ``mimetype``        data mimetype (import only)
+=================== ==========================================================

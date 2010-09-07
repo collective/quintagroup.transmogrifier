@@ -5,7 +5,7 @@ Changelog
 ----------------
 
 
-0.3 (2010-09-06)
+0.3 (2010-09-07)
 ----------------
 
  - Plone4 compatibility [tomster, csenger]

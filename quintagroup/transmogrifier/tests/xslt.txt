@@ -57,9 +57,10 @@ ZCML directive. If item hasn't those keys, it will be skipped.
 []
 [('_type', 'Weblog')]
 [('_old_type', 'Blog')]
-[('_files', {'manifest': {'data': 'xml', 'name': 'manifest.xml'}}),
+[('_files', [('manifest', [('data', 'xml'), ('name', 'manifest.xml')])]),
  ('_old_type', 'Blog'),
  ('_type', 'Weblog')]
-[('_files', {'marshall': {'data': 'transformed xml', 'name': 'marshall.xml'}}),
+[('_files',
+  [('marshall', [('data', 'transformed xml'), ('name', 'marshall.xml')])]),
  ('_old_type', 'Blog'),
  ('_type', 'Weblog')]

@@ -51,8 +51,10 @@ key where XML data will be or is stored.
 [('_path', 'not/existing/bar')]
 [('_path', 'spam/eggs/notassignable')]
 [('_files',
-  {'portlets': {'data': ...
-                'name': '.portlets.xml'}}),
+  [('portlets',
+    [('data',
+...
+     ('name', '.portlets.xml')])]),
  ('_path', 'assignable')]
 <?xml version="1.0" encoding="utf-8"?>
 <portlets>
@@ -77,12 +79,16 @@ key where XML data will be or is stored.
 </portlets>
 <BLANKLINE>
 [('_files',
-  {'portlets': {'data': ...
-                'name': '.portlets.xml'}}),
+  [('portlets',
+    [('data',
+...
+     ('name', '.portlets.xml')])]),
  ('_path', 'other-assignable'),
  ('files',
-  {'portlets': {'data': ...
-                'name': '.portlets.xml'}})]
+  [('portlets',
+    [('data',
+...
+     ('name', '.portlets.xml')])])]
 <?xml version="1.0" encoding="utf-8"?>
 <portlets>
   <assignment category="context" key="/other-assignable" manager="plone.leftcolumn" name="rss" type="portlets.rss">
@@ -169,12 +175,16 @@ and not purge existent portlets. To force purging - it must be set to ``True``.
 >>> transmogrifier(u'quintagroup.transmogrifier.tests.portlets2') # doctest: +ELLIPSIS, +REPORT_NDIFF
 []
 [('_files',
-  {'portlets': {'data': ...
-                'name': '.portlets.xml'}}),
+  [('portlets',
+    [('data',
+...
+     ('name', '.portlets.xml')])]),
  ('_path', 'other-assignable'),
  ('files',
-  {'portlets': {'data': ...
-                'name': '.portlets.xml'}})]
+  [('portlets',
+    [('data',
+...
+     ('name', '.portlets.xml')])])]
 <?xml version="1.0" encoding="utf-8"?>
 <portlets>
   <assignment category="context" key="/other-assignable" manager="plone.leftcolumn" name="rss" type="portlets.rss">

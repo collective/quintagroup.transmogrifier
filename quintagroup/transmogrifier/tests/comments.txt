@@ -48,8 +48,10 @@ key where XML data will be or is stored.
 [('_path', 'not/existing/bar')]
 [('_path', 'spam/eggs/notdiscussable')]
 [('_files',
-  {'comments': {'data': ...
-                'name': '.comments.xml'}}),
+  [('comments',
+    [('data',
+      '<?xml...>\n'),
+     ('name', '.comments.xml')])]),
  ('_path', 'spam/eggs/foo')]
 <?xml version="1.0" encoding="utf-8"?>
 <discussion>

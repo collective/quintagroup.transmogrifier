@@ -1,8 +1,16 @@
 Changelog
 =========
 
-0.3 (Unreleased)
+0.4 (Unreleased)
 ----------------
+
+
+0.3 (2010-09-06)
+----------------
+
+ - Plone4 compatibility [tomster, csenger]
+
+ - updated tests for Plone4 and Plone3 [fenix, liebster]
 
  - added sections for export/import of portlet assignments [koval]
 

@@ -3,6 +3,8 @@ from os.path import join
 import quintagroup
 from Products.Five.testbrowser import Browser
 from Products.PloneTestCase import ptc
+from Products.CMFPlone.utils import versionTupleFromString, getToolByName
+
 from quintagroup.transmogrifier import testing
 
 
@@ -20,6 +22,17 @@ class TransmogrifierTestCase(ptc.PloneTestCase):
     def target(self):
         """return the 2nd plone site, the target for our import tests."""
         return self.app.target
+
+    def getPloneVersion(self):
+        """Returns plone version tuple."""
+
+        self.pm = getToolByName(self.portal, 'portal_migration')
+        try:
+            version = versionTupleFromString(self.pm.getSoftwareVersion())
+        except AttributeError:
+            version = versionTupleFromString(self.pm.getFileSystemVersion())
+
+        return version
 
 class TransmogrifierFunctionalTestCase(ptc.FunctionalTestCase):
     """ base class for functional tests """

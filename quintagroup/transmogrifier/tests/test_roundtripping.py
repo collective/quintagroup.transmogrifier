@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
+from zope.component import getMultiAdapter, getUtilitiesFor
 from filecmp import dircmp
 from tarfile import TarFile
 from unittest import defaultTestLoader
+from plone.portlets.interfaces import IPortletRetriever
+from plone.app.portlets.portlets.navigation import INavigationPortlet
+from plone.portlets.interfaces import IPortletManager
+
 from quintagroup.transmogrifier.tests.base import TransmogrifierTestCase
 
 
@@ -46,7 +51,7 @@ class RoundtrippingTests(TransmogrifierTestCase):
         tarball = open(filename)
         setup.runAllImportStepsFromProfile(None, True, archive=tarball.read())
 
-    def recursive_comparison(self, comparison): 
+    def recursive_comparison(self, comparison):
         report = {
             'diff_files' : comparison.diff_files,
             'funny_files' : comparison.funny_files
@@ -54,18 +59,40 @@ class RoundtrippingTests(TransmogrifierTestCase):
         for sd in comparison.subdirs.itervalues():
             report.update(self.recursive_comparison(sd))
         return report
+    def prepare_navigation(self):
+        """
+        Before we start to export plone 3.x site content we
+        need to select some folder as root of navigation in
+        navigation portlet. This must be done, otherwise
+        then trying to import portlet navigation with empty
+        root field - we'll get validation error.
 
+        """
+
+        # let's create folders that will be our navigation root
+        for p in [self.portal, self.target]:
+            getattr(p, 'invokeFactory')('Folder', 'navigation_root')
+
+        for name, portletManager in getUtilitiesFor(IPortletManager):
+            retriever = getMultiAdapter((self.portal, portletManager),
+                                         IPortletRetriever)
+            navigation_assignments = [portlet['assignment']
+                for portlet in retriever.getPortlets()
+                if INavigationPortlet.providedBy(portlet['assignment'])]
+
+            for na in navigation_assignments:
+                setattr(na, 'root', '/navigation_root')
 
     def testTripWireExport(self):
         """ A basic sanity check. We create demo data, normalize it, export it
-            and then recursively compare its file structure with a previous 
+            and then recursively compare its file structure with a previous
             snapshot of that export (which has been added to the test fixture.
-            
+
             This enables us to detect changes in the marshalling. If this test
             begins to fail, we should simply commit the new structure to the
             fixture (after anyalyzing the differences) to make the test pass
             again.
-        """        
+        """
         # normalize uid, creation and modifcation dates to enable meaningful
         # diffs
         self.loginAsPortalOwner()
@@ -74,7 +101,7 @@ class RoundtrippingTests(TransmogrifierTestCase):
             obj.setModificationDate('2010-01-01T14:00:00Z')
             obj.setCreationDate('2010-01-01T14:00:00Z')
             obj._at_uid = brain.getPath()
-        
+
         # monkeypatch the CMF marshaller to exclude the workflow history
         # as that information is difficult to normalize
         from quintagroup.transmogrifier.namespaces.cmfns import CMF
@@ -85,7 +112,9 @@ class RoundtrippingTests(TransmogrifierTestCase):
         exported_structure_path = '%s/exported/' % self.tempfolder
         for member in exported.getmembers():
             exported.extract(member, path=exported_structure_path)
-        snapshot_structure_path = '%s/reference_export/' % self.data_path
+        pversion = self.getPloneVersion()
+        snapshot_structure_path = '%s/reference_export/%s/' % \
+            (self.data_path, '_'.join(map(str, pversion[:3])))
         comparison = dircmp(snapshot_structure_path, exported_structure_path)
 
         # for the test we check that there are no files that differ
@@ -102,6 +131,7 @@ class RoundtrippingTests(TransmogrifierTestCase):
 
         # make sure, that prior to import, the target size does not
         # have the same number of events:
+        self.loginAsPortalOwner()
         self.failIf(sorted(list(self.portal.events.objectIds())) ==
             sorted(list(self.target.events.objectIds())))
 
@@ -111,6 +141,10 @@ class RoundtrippingTests(TransmogrifierTestCase):
         source_related = sorted(['/'.join(obj.getPhysicalPath()) for obj in self.portal['front-page'].getRelatedItems()])
         self.assertEqual(source_related,
             ['/plone/events/party', '/plone/news/hold-the-press'])
+
+        if self.getPloneVersion()[0] < 4:
+            # we need to do some preparation before site export
+            self.prepare_navigation()
 
         # export the source site and import it into the target:
         self.import_site(self.export_site())

@@ -16,9 +16,12 @@ Design and development
 
     - Bohdan Koval _ at Quintagroup_
     - Andriy Mylenkyy _ at Quintagroup_
+    - Taras Melnychuk _ at Quitnagroup_
+    - Vitaliy Stepanov _ at Quintagroup_
     - Vitaliy Podoba
     - Volodymyr Cherepanyak _ at Quintagroup_
     - Myroslav Opyr _ at Quintagroup_
+    - Tom Lazar
 
 
 .. _Quintagroup: http://www.quintagroup.com/

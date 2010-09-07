@@ -48,12 +48,13 @@ excluded.
 >>> transmogrifier(u'quintagroup.transmogrifier.tests.marshall') # doctest: +REPORT_NDIFF
 []
 [('_excluded_fields', ('file', 'image')),
- ('_files', {'marshall': {'data': 'marshalled', 'name': '.marshall.xml'}}),
+ ('_files',
+  [('marshall', [('data', 'marshalled'), ('name', '.marshall.xml')])]),
  ('_path', 'spam/eggs/foo')]
-[('_files', {'marshall': {'data': None, 'name': '.marshall.xml'}}),
+[('_files', [('marshall', [('data', None), ('name', '.marshall.xml')])]),
  ('_path', 'topic/criterion')]
 [('_path', 'not/existing/bar')]
-[('_files', {'marshall': {'data': 'xml', 'name': '.marshall.xml'}}),
+[('_files', [('marshall', [('data', 'xml'), ('name', '.marshall.xml')])]),
  ('_path', 'spam/eggs/notatcontent')]
 
 >>> pprint.pprint(plone.marshalled)

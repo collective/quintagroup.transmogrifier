@@ -56,7 +56,7 @@ Now we test if writer context is properly controlled by ``context`` option.
 >>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdefault') # doctest: +ELLIPSIS, +REPORT_NDIFF
 [('_export_context',
   <Tarball args=(...) _wrote=[]>),
- ('_files', {}),
+ ('_files', []),
  ('_path', '')]
 
 >>> writerdir = """
@@ -71,7 +71,7 @@ Now we test if writer context is properly controlled by ``context`` option.
 >>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdir') # doctest: +ELLIPSIS, +REPORT_NDIFF
 [('_export_context',
   <Directory args=(..., 'content') _wrote=[]>),
- ('_files', {}),
+ ('_files', []),
  ('_path', '')]
 
 >>> writertar = """
@@ -85,7 +85,7 @@ Now we test if writer context is properly controlled by ``context`` option.
 >>> transmogrifier(u'quintagroup.transmogrifier.tests.writertar') # doctest: +ELLIPSIS, +REPORT_NDIFF
 [('_export_context',
   <Tarball args=(...) _wrote=[]>),
- ('_files', {}),
+ ('_files', []),
  ('_path', '')]
 
 >>> writerdb = """
@@ -99,5 +99,5 @@ Now we test if writer context is properly controlled by ``context`` option.
 >>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdb') # doctest: +ELLIPSIS, +REPORT_NDIFF
 [('_export_context',
   <Snapshot args=(...) _wrote=[]>),
- ('_files', {}),
+ ('_files', []),
  ('_path', '')]

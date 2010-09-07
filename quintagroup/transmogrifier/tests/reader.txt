@@ -43,25 +43,25 @@ reader section options. Option name is filename and option value is section name
 >>> registerConfig(u'quintagroup.transmogrifier.tests.reader', reader)
 >>> transmogrifier(u'quintagroup.transmogrifier.tests.reader') # doctest: +ELLIPSIS, +REPORT_NDIFF
 [('_files',
-  {'other.file': {'data': 'some data', 'name': 'other.file'},
-   'propertymanager': {'data': 'some data', 'name': '.properties.xml'}}),
+  [('other.file', [('data', 'some data'), ('name', 'other.file')]),
+   ('propertymanager', [('data', 'some data'), ('name', '.properties.xml')])]),
  ('_import_context',
-  <Tarball args=(...),
+  <Tarball args=(...)>),
  ('_path', '')]
-[('_files', {'manifest': {'data': 'some data', 'name': '.objects.xml'}}),
+[('_files', [('manifest', [('data', 'some data'), ('name', '.objects.xml')])]),
  ('_import_context',
   <Tarball args=(...)>),
  ('_path', 'news')]
 [('_import_context',
   <Tarball args=(...)>),
  ('_path', 'news/recent')]
-[('_files', {'manifest': {'data': 'some data', 'name': '.objects.xml'}}),
+[('_files', [('manifest', [('data', 'some data'), ('name', '.objects.xml')])]),
  ('_import_context',
   <Tarball args=(...)>),
  ('_path', 'pages')]
 [('_files',
-  {'comments': {'data': 'some data', 'name': '.comments.xml'},
-   'marshall': {'data': 'some data', 'name': '.marshall.xml'}}),
+  [('comments', [('data', 'some data'), ('name', '.comments.xml')]),
+   ('marshall', [('data', 'some data'), ('name', '.marshall.xml')])]),
  ('_import_context',
   <Tarball args=(...)>),
  ('_path', 'pages/front-page')]

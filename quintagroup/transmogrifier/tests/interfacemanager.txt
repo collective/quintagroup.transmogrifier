@@ -63,8 +63,10 @@ way we prevent confusion with interfaces, implemented by class itself.
 [('_path', 'not/existing/bar')]
 [('_path', 'spam/eggs/notatcontent')]
 [('_files',
-  {'interfaces': {'data': '<?xml version="1.0" encoding="utf-8"?>\n<interfaces>\n  <record>\n    zope.annotation.interfaces.IAttributeAnnotatable\n  </record>\n  <record>\n    zope.interface.Interface\n  </record>\n</interfaces>\n',
-                  'name': '.interfaces.xml'}}),
+  [('interfaces',
+    [('data',
+      '<?xml...>\n'),
+     ('name', '.interfaces.xml')])]),
  ('_path', 'spam/eggs/foo')]
 <?xml version="1.0" encoding="utf-8"?>
 <interfaces>

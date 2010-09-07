@@ -58,8 +58,10 @@ and ``type-key`` option that gives key to store item's portal type (default is
    ('front-page', 'Document'),
    ('only-in-manifest', 'Document'))),
  ('_files',
-  {'manifest': {'data': ...
-                'name': '.objects.xml'}}),
+  [('manifest',
+    [('data',
+      '<?xml...>\n'),
+     ('name', '.objects.xml')])]),
  ('_path', '')]
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
@@ -79,8 +81,10 @@ and ``type-key`` option that gives key to store item's portal type (default is
 <BLANKLINE>
 [('_entries', (('aggregator', 'Topic'), ('once-more', 'File'))),
  ('_files',
-  {'manifest': {'data': ...
-                'name': '.objects.xml'}}),
+  [('manifest',
+    [('data',
+      '<?xml...>\n'),
+     ('name', '.objects.xml')])]),
  ('_path', 'news'),
  ('_type', 'Folder')]
 <?xml version="1.0" encoding="utf-8"?>

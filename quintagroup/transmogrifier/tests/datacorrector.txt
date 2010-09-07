@@ -45,14 +45,16 @@ Paths to objects are always interpreted as relative to the context.
 >>> registerConfig(u'quintagroup.transmogrifier.tests.datacorrector', datacorrector)
 >>> transmogrifier(u'quintagroup.transmogrifier.tests.datacorrector') # doctest: +ELLIPSIS, +REPORT_NDIFF
 []
-[('_files', {'marshall': "item hasn't path"})]
+[('_files', [('marshall', "item hasn't path")])]
 [('_path', 'spam/eggs/foo')]
 [('_path', 'not/existing/bar')]
-[('_files', {'marshall': "object isn't adaptable"}),
+[('_files', [('marshall', "object isn't adaptable")]),
  ('_path', 'spam/eggs/notadaptable')]
 [('_files',
-  {'marshall': 'modified export data', 'unchanged': 'this must be unchanged'}),
+  [('marshall', 'modified export data'),
+   ('unchanged', 'this must be unchanged')]),
  ('_path', 'spam/eggs/foo')]
 [('_files',
-  {'manifest': 'modified import data', 'unchanged': 'this must be unchanged'}),
+  [('manifest', 'modified import data'),
+   ('unchanged', 'this must be unchanged')]),
  ('_path', 'spam/eggs/foo')]

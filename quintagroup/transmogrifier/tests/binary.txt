@@ -56,11 +56,14 @@ this or another binary field only if condition expression evaluates to true.
 [('_path', 'spam/eggs/notatcontent')]
 [('_excluded_fields', ['image', 'file']),
  ('_files',
-  {'archive.tar.gz': {'content_type': 'application/x-tar',
-                      'data': 'binary data',
-                      'name': 'archive.tar.gz'},
-   'file-fields': {'data': ...
-                   'name': '.file-fields.xml'}}),
+  [('archive.tar.gz',
+    [('content_type', 'application/x-tar'),
+     ('data', 'binary data'),
+     ('name', 'archive.tar.gz')]),
+   ('file-fields',
+    [('data',
+      '<?xml...>\n'),
+     ('name', '.file-fields.xml')])]),
  ('_path', 'spam/eggs/foo')]
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>

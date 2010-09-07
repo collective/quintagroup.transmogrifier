@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.2'
+version = '0.3'
 
 setup(name='quintagroup.transmogrifier',
       version=version,
@@ -25,7 +25,8 @@ setup(name='quintagroup.transmogrifier',
       install_requires=[
           'setuptools',
           'collective.transmogrifier',
-          'plone.app.transmogrifier'
+          'plone.app.transmogrifier',
+          'collective.testcaselayer'
           # -*- Extra requirements: -*-
       ],
       extras_require = {

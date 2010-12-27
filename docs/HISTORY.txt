@@ -4,6 +4,9 @@ Changelog
 0.4 (Unreleased)
 ----------------
 
+- Added z3c.autoinclude entry point so that zcml slug is no longer needed. 
+  Unfortunately I have no permissions to update documentation regarding this [miohtama]
+
 - Fix issue of using path index with catalogsource [miohtama] 
 
 0.3 (2010-09-07)

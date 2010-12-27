@@ -1,3 +1,5 @@
+import copy
+
 from zope.interface import classProvides, implements
 from zope.annotation.interfaces import IAnnotations
 
@@ -105,7 +107,16 @@ class CatalogSourceSection(object):
         """
         results = []
         seen = []
-        raw_results = self.catalog(path=path, **self.query)
+        
+        # Work around the issue if our catalog query has been by path
+        # -> do not include path search term twice in the query.
+        # Note that this may lead to incorrect results
+        # for complex path queries.
+        query = copy.deepcopy(self.query)
+        if "path" in query:
+            del query["path"]
+        
+        raw_results = self.catalog(path=path, **query)
         for brain in raw_results:
             current = brain.getPath()
             relative = current[len(path):]

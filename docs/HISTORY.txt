@@ -4,6 +4,7 @@ Changelog
 0.4 (Unreleased)
 ----------------
 
+- Fix issue of using path index with catalogsource [miohtama] 
 
 0.3 (2010-09-07)
 ----------------

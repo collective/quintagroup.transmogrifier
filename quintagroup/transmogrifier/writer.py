@@ -1,3 +1,4 @@
+import mimetypes
 import os.path
 import time
 
@@ -59,6 +60,13 @@ class WriterSection(object):
             item_path = item_path.rstrip('/')
 
             for k, v in item[fileskey].items():
-                self.export_context.writeDataFile(v['name'], v['data'], 'text/xml', subdir=item_path)
+                # contenttype is only used to determine whether to open the
+                # output file in text or binary mode.
+                contenttype = v.get('contenttype', None)
+                if contenttype is None:
+                    contenttype, encoding = mimetypes.guess_type(v['name'])
+                if contenttype is None:
+                    contenttype = 'application/octet-stream'
+                self.export_context.writeDataFile(v['name'], v['data'], contenttype, subdir=item_path)
 
             yield item

@@ -4,6 +4,8 @@ Changelog
 0.4 (Unreleased)
 ----------------
 
+- Add content type sniffing to the WriterSection. [elro]
+
 - Added z3c.autoinclude entry point so that zcml slug is no longer needed. 
   Unfortunately I have no permissions to update documentation regarding this [miohtama]
 

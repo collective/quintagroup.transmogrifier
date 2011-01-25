@@ -46,13 +46,13 @@ class WriterSection(object):
 
     def __iter__(self):
         for item in self.previous:
+            item['_export_context'] = self.export_context
+
             pathkey = self.pathkey(*item.keys())[0]
             fileskey = self.fileskey(*item.keys())[0]
 
             if not (pathkey and fileskey): # path doesn't exist or no data to write
                 yield item; continue
-
-            item['_export_context'] = self.export_context
 
             path = item[pathkey]
 

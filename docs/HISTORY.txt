@@ -4,6 +4,9 @@ Changelog
 0.4 (Unreleased)
 ----------------
 
+- Add the _export_context to the item always so other section may use it even
+  if there is no _files key. [elro]
+
 - Add content type sniffing to the WriterSection. [elro]
 
 - Added z3c.autoinclude entry point so that zcml slug is no longer needed. 

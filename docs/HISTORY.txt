@@ -4,6 +4,8 @@ Changelog
 0.4 (Unreleased)
 ----------------
 
+- Only patch Generic Setup when Python is < 2.6. [elro]
+
 - Add the _export_context to the item always so other section may use it even
   if there is no _files key. [elro]
 

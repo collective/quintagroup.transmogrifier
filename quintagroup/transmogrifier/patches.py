@@ -4,6 +4,9 @@ import time
 from tarfile import TarInfo, DIRTYPE
 from StringIO import StringIO
 
+# These patches are only required for versions of Plone that use older Pythons
+PYTHON_VERSION = sys.version_info[:2]
+
 # TarballExportContext don't write dirs in tarball and we need to fix this
 
 #security.declareProtected( ManagePortal, 'writeDataFile' )
@@ -37,8 +40,9 @@ def writeDataFile( self, filename, text, content_type, subdir=None ):
     info.mtime = mod_time
     self._archive.addfile( info, stream )
 
-from Products.GenericSetup.context import TarballExportContext
-TarballExportContext.writeDataFile = writeDataFile
+if PYTHON_VERSION < (2,6):
+    from Products.GenericSetup.context import TarballExportContext
+    TarballExportContext.writeDataFile = writeDataFile
 
 from Products.GenericSetup.context import SKIPPED_FILES, SKIPPED_SUFFIXES
 
@@ -77,8 +81,9 @@ def listDirectory(self, path, skip=SKIPPED_FILES,
 
     return names
 
-from Products.GenericSetup.context import TarballImportContext
-TarballImportContext.listDirectory = listDirectory
+if PYTHON_VERSION < (2,6):
+    from Products.GenericSetup.context import TarballImportContext
+    TarballImportContext.listDirectory = listDirectory
 
 # patch for this bug in tarfile module - http://bugs.python.org/issue1719898
 from tarfile import nts, GNUTYPE_SPARSE, normpath
@@ -130,6 +135,6 @@ def frombuf(cls, buf):
         tarinfo.name += "/"
     return tarinfo
 
-if sys.version_info[:2] == (2,4):
+if PYTHON_VERSION == (2,4):
     frombuf = classmethod(frombuf)
     TarInfo.frombuf = frombuf

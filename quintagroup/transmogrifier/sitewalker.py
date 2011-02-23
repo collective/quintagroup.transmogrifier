@@ -19,6 +19,10 @@ class SiteWalkerSection(object):
         self.pathkey = options.get('path-key', '_path').strip()
         self.typekey = options.get('type-key', '_type').strip()
         self.entrieskey = options.get('entries-key', '_entries').strip()
+        # If you only want to export a part of the site, you can
+        # specify a start-path; use 'folder' to only export
+        # '/plonesite/folder'.
+        self.start_path = options.get('start-path', '').strip()
         # this is used for communication with 'logger' section
         self.anno = IAnnotations(transmogrifier)
         self.storage = self.anno.setdefault(VALIDATIONKEY, [])
@@ -45,7 +49,13 @@ class SiteWalkerSection(object):
         for item in self.previous:
             yield item
 
-        for obj, contained in self.walk(self.context):
+        # Determine the object from which to start walking.
+        if self.start_path:
+            # We only want to export a part of the site.
+            start_obj = self.context.restrictedTraverse(self.start_path)
+        else:
+            start_obj = self.context
+        for obj, contained in self.walk(start_obj):
             item = {
                 self.pathkey: '/'.join(obj.getPhysicalPath()[2:]),
                 self.typekey: obj.getPortalTypeName(),

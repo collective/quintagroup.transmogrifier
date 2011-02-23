@@ -4,6 +4,11 @@ Changelog
 0.4 (Unreleased)
 ----------------
 
+- If you only want to export a part of the site, you can specify a
+  start-path in the sitewalker section; use 'folder' to only export
+  '/plonesite/folder'.
+  [maurits]
+
 - Only patch Generic Setup when Python is < 2.6. [elro]
 
 - Add the _export_context to the item always so other section may use it even

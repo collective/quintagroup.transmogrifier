@@ -23,7 +23,7 @@ class CatalogSourceSection(object):
           This is useful with path based queries where you do not wish to export items of each parent 
           folder. 
     
-    For other parameteres, please consult the orignal authors
+    For other parameteres, please consult the original authors
     anad pledge them to comment what they have intended to do with this code.
     
     """
@@ -133,11 +133,11 @@ class CatalogSourceSection(object):
         if VALIDATIONKEY in self.anno:
             del self.anno[VALIDATIONKEY]
 
-    def getContained(self, path, orignal_results, parents):
+    def getContained(self, path, original_results, parents):
         """ Return list of (object_id, portal_type) for objects that are returned by catalog
             and contained in folder with given 'path'.
         
-        @param orignal_results: Orignal portal_catalog result set - filter out child objects if they are not in this set.
+        @param original_results: Orignal portal_catalog result set - filter out child objects if they are not in this set.
                                 Set to None if you do not wish to filter the results. 
         
         """
@@ -145,7 +145,7 @@ class CatalogSourceSection(object):
         seen = []
         
        
-        # Remove the orignal path element from the query if there was one 
+        # Remove the original path element from the query if there was one 
         query = copy.deepcopy(self.query)
         if "path" in query:
             del query["path"]
@@ -193,13 +193,13 @@ class CatalogSourceSection(object):
             if r["UID"] in allowed_uids:
                 return True
             else:
-                logger.info("Excluded contained item as it did not match the orignal catalog query:" + str(r.getPath()))
+                logger.info("Excluded contained item as it did not match the original catalog query:" + str(r.getPath()))
 
-        if self.exclude_contained and orignal_results is not None:
+        if self.exclude_contained and original_results is not None:
             # Filter contained results against our query, so that
             # we do not export results from parent objects which did not match
             # Build list of allowed object UIDs -
-            allowed_uids = [ r["UID"] for r in orignal_results ]
+            allowed_uids = [ r["UID"] for r in original_results ]
             
             # All parents must be allowed always            
             filtered_results = [ r for r in results if filter(r) == True  ]

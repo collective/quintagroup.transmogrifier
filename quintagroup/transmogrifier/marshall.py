@@ -40,7 +40,7 @@ class MarshallerSection(object):
                 yield item; continue
 
             path = item[pathkey]
-            obj = self.context.unrestrictedTraverse(path, None)
+            obj = self.context.unrestrictedTraverse(str(path), None)
             if obj is None:         # path doesn't exist
                 yield item; continue
 
@@ -99,7 +99,7 @@ class DemarshallerSection(object):
                 yield item; continue
 
             path = item[pathkey]
-            obj = self.context.unrestrictedTraverse(path, None)
+            obj = self.context.unrestrictedTraverse(str(path), None)
             if obj is None:         # path doesn't exist
                 yield item; continue
 

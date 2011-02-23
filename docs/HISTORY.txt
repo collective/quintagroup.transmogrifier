@@ -4,6 +4,11 @@ Changelog
 0.4 (Unreleased)
 ----------------
 
+- In the marshaller sections, make sure the path is a string, as it
+  fails on unicode (and paths should be ascii strings).
+  Fixes http://plone.org/products/quintagroup.transmogrifier/issues/1
+  [maurits]
+
 - If you only want to export a part of the site, you can specify a
   start-path in the sitewalker section; use 'folder' to only export
   '/plonesite/folder'.

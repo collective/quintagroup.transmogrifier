@@ -16,7 +16,7 @@ Design and development
 
     - Bohdan Koval _ at Quintagroup_
     - Andriy Mylenkyy _ at Quintagroup_
-    - Taras Melnychuk _ at Quitnagroup_
+    - Taras Melnychuk _ at Quintagroup_
     - Vitaliy Stepanov _ at Quintagroup_
     - Vitaliy Podoba
     - Volodymyr Cherepanyak _ at Quintagroup_

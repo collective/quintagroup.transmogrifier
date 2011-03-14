@@ -8,12 +8,16 @@ from zope.annotation import IAnnotations
 from collective.transmogrifier.interfaces import ITransmogrifier
 from collective.transmogrifier.transmogrifier import _load_config, constructPipeline
 from collective.transmogrifier.transmogrifier import configuration_registry
+try:
+    from collective.transmogrifier.genericsetup import IMPORT_CONTEXT
+except ImportError:
+    # collective.transmogrifier < 1.3
+    IMPORT_CONTEXT = 'collective.transmogrifier.genericsetup.import_context'
 
 from Products.GenericSetup.context import TarballExportContext, TarballImportContext
 from Products.GenericSetup.interfaces import IFilesystemImporter
 
 from quintagroup.transmogrifier.writer import WriterSection
-from quintagroup.transmogrifier.reader import ReaderSection
 from quintagroup.transmogrifier.configview import ANNOKEY
 
 EXPORT_CONFIG = 'export'
@@ -120,23 +124,12 @@ def importSiteStructure(context):
             pass
         return
 
+    IAnnotations(transmogrifier)[IMPORT_CONTEXT] = context
     options = transmogrifier._raw['transmogrifier']
     sections = options['pipeline'].splitlines()
     pipeline = constructPipeline(transmogrifier, sections)
 
     last_section = pipeline.gi_frame.f_locals['self']
-
-    # if 'quintagroup.transmogrifier.writer' section's export context is
-    # tarball replace it with given function argument
-    while hasattr(last_section, 'previous'):
-        if isinstance(last_section, ReaderSection) and \
-            isinstance(last_section.import_context, TarballImportContext):
-            last_section.import_context = context
-        last_section = last_section.previous
-        # end cycle if we get empty starter section
-        if type(last_section) == type(iter(())):
-            break
-        last_section = last_section.gi_frame.f_locals['self']
 
     # Pipeline execution
     for item in pipeline:

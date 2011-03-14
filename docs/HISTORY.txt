@@ -4,6 +4,18 @@ Changelog
 0.4 (Unreleased)
 ----------------
 
+- Yield items in manifest order from manifest importer section.
+  [elro]
+
+- Add an OrderedDict implementation.
+  [elro]
+
+- Walk the folder structure breadth first (sort of) in reader section.
+  [elro]
+
+- Set import context as an annotation on transmogrifier.
+  [elro]
+
 - In the marshaller sections, make sure the path is a string, as it
   fails on unicode (and paths should be ascii strings).
   Fixes http://plone.org/products/quintagroup.transmogrifier/issues/1

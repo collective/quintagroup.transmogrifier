@@ -4,6 +4,11 @@ from zope.interface import classProvides, implements
 from zope.annotation.interfaces import IAnnotations
 
 from collective.transmogrifier.interfaces import ISection, ISectionBlueprint
+try:
+    from collective.transmogrifier.genericsetup import IMPORT_CONTEXT
+except ImportError:
+    # collective.transmogrifier < 1.3
+    IMPORT_CONTEXT = 'collective.transmogrifier.genericsetup.import_context'
 
 from Products.GenericSetup import context
 from Products.CMFCore import utils
@@ -34,6 +39,12 @@ class ReaderSection(object):
         else:
             self.prefix = ''
 
+        if 'context' not in options and IMPORT_CONTEXT in self.anno:
+            self.import_context = self.anno[IMPORT_CONTEXT]
+        else:
+            self.makeContext(options)
+
+    def makeContext(self, options):
         context_type = options.get('context', 'tarball').strip()
         if context_type not in ['directory', 'tarball', 'snapshot']:
             context_type = 'tarball'
@@ -58,14 +69,19 @@ class ReaderSection(object):
         names = self.import_context.listDirectory(top)
         if names is None:
             names = []
-        yield self.readFiles(top, names)
-        for name in names:
-            name = os.path.join(top, name)
-            if self.import_context.isDirectory(name):
-                for i in self.walk(name):
-                    yield i
+        paths = (os.path.join(top, name) for name in names)
+        dirs = [path for path in paths if self.import_context.isDirectory(path)]
+        for path in dirs:
+            yield self.readFiles(path)
+        for path in dirs:
+            for i in self.walk(path):
+                yield i
 
-    def readFiles(self, top, names):
+    def readFiles(self, top, names=None):
+        if names is None:
+            names = self.import_context.listDirectory(top)
+            if names is None:
+                names = []
         path = top[len(self.prefix):]
         path = path.lstrip('/')
         item = {self.pathkey: path}
@@ -83,6 +99,11 @@ class ReaderSection(object):
     def __iter__(self):
         for item in self.previous:
             yield item
+
+        item = self.readFiles(self.prefix)
+        item[self.contextkey] = self.import_context
+        self.storage.append(item[self.pathkey])
+        yield item
 
         for item in self.walk(self.prefix):
             # add import context to item (some next section may use it)

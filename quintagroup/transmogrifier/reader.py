@@ -1,3 +1,4 @@
+import os
 import os.path
 
 from zope.interface import classProvides, implements
@@ -35,7 +36,7 @@ class ReaderSection(object):
 
         if 'prefix' in options:
             self.prefix = options['prefix'].strip()
-            self.prefix = self.prefix.strip('/')
+            self.prefix = self.prefix.strip(os.sep)
         else:
             self.prefix = ''
 
@@ -83,8 +84,8 @@ class ReaderSection(object):
             if names is None:
                 names = []
         path = top[len(self.prefix):]
-        path = path.lstrip('/')
-        item = {self.pathkey: path}
+        path = path.lstrip(os.sep)
+        item = {self.pathkey: '/'.join(path.split(os.sep))}
         for name in names:
             full_name = os.path.join(top, name)
             if self.import_context.isDirectory(full_name): continue

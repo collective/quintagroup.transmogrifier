@@ -1,5 +1,4 @@
 import mimetypes
-import os.path
 import time
 
 from zope.interface import classProvides, implements
@@ -55,10 +54,12 @@ class WriterSection(object):
                 yield item; continue
 
             path = item[pathkey]
-
-            item_path = os.path.join(self.prefix, path)
-            item_path = item_path.rstrip('/')
-
+            
+            if path:
+                item_path = '/'.join((self.prefix, path))
+            else:
+                item_path = self.prefix
+                
             for k, v in item[fileskey].items():
                 # contenttype is only used to determine whether to open the
                 # output file in text or binary mode.

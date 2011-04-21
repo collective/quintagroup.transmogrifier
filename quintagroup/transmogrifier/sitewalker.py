@@ -22,7 +22,7 @@ class SiteWalkerSection(object):
         # If you only want to export a part of the site, you can
         # specify a start-path; use 'folder' to only export
         # '/plonesite/folder'.
-        self.start_path = options.get('start-path', '').strip()
+        self.start_path = options.get('start-path', '').strip().split()
         # this is used for communication with 'logger' section
         self.anno = IAnnotations(transmogrifier)
         self.storage = self.anno.setdefault(VALIDATIONKEY, [])
@@ -45,16 +45,8 @@ class SiteWalkerSection(object):
         else:
             yield obj, ()
 
-    def __iter__(self):
-        for item in self.previous:
-            yield item
-
-        # Determine the object from which to start walking.
-        if self.start_path:
-            # We only want to export a part of the site.
-            start_obj = self.context.restrictedTraverse(self.start_path)
-        else:
-            start_obj = self.context
+    def walker(self, start_obj):
+        """ build items stack for each of star paths"""
         for obj, contained in self.walk(start_obj):
             item = {
                 self.pathkey: '/'.join(obj.getPhysicalPath()[2:]),
@@ -64,8 +56,23 @@ class SiteWalkerSection(object):
                 item[self.entrieskey] = contained
             # add item path to stack
             self.storage.append(item[self.pathkey])
-        
             yield item
+
+    def __iter__(self):
+        for item in self.previous:
+            yield item
+	    # Determine the object from which to start walking.  
+        if self.start_path:
+            # We only want to export a part of the site.
+            for cur_start_path in self.start_path:
+		        start_obj = self.context.restrictedTraverse(cur_start_path)
+		        for item in self.walker(start_obj):
+		            yield item	    
+        else:
+            start_obj = self.context
+            for item in self.walker(start_obj):
+		        yield item
+
 
         # cleanup
         if VALIDATIONKEY in self.anno:

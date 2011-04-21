@@ -3,6 +3,10 @@ Changelog
 
 0.4 (Unreleased)
 ----------------
+
+- Multiple path export support added to sitewalker
+  [chervol]
+
 - Collection criteria export added for catalog source
   [chervol]
 

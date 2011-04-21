@@ -9,6 +9,8 @@ from Products.CMFDefault.exceptions import DiscussionNotAllowed
 
 from collective.transmogrifier.interfaces import ISection, ISectionBlueprint
 from collective.transmogrifier.utils import defaultMatcher
+import logging
+logger = logging.getLogger("CommentsMarshaller")
 
 class CommentsExporterSection(object):
     classProvides(ISectionBlueprint)
@@ -143,7 +145,12 @@ class CommentsImporterSection(object):
             yield item
 
     def parseXML(self, data):
-        doc = minidom.parseString(data)
+        try:
+            doc = minidom.parseString(data)
+        except:
+            # skip through brokn comments sources
+            logging.info("ERROR: Failed to parse .comments.xml")
+            return {}
         root = doc.documentElement
 
         items = {}

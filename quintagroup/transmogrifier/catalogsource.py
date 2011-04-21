@@ -127,6 +127,14 @@ class CatalogSourceSection(object):
                     item[self.entrieskey] = contained
 
             self.storage.append(item[self.pathkey])
+            # try to export entire Collection with criteria
+            try:
+                obj = self.context.restrictedTraverse(path)
+                if obj.Type() == 'Collection':
+                    for crit in contained:
+                        yield {'_type':crit[1], '_path':item['_path']+'/'+crit[0]}
+            except:
+                logging.info("ERROR Traversing obj: %s"%path)
             yield item
 
         # cleanup
@@ -208,5 +216,13 @@ class CatalogSourceSection(object):
             filtered_results = results
         
         contained = [(i.getId, str(i.portal_type)) for i in filtered_results ]
-                
+
+        # list Collection criteria
+        try:
+            obj = self.context.restrictedTraverse(str(path), None)
+            if obj.Type() == 'Collection':
+                contained = [(str(i.id), str(i.portal_type)) for i in obj.objectValues()]
+        except:
+            logging.info("ERROR Traversing obj: %s"%path)
+                     
         return tuple(contained)

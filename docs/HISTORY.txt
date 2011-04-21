@@ -3,6 +3,9 @@ Changelog
 
 0.4 (Unreleased)
 ----------------
+- Collection criteria export added for catalog source
+  [chervol]
+
 - Simple transformation fallback added for straight forward type substitution 
   scenario, correspondent test updated 
   [chervol, kroman0]

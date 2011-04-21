@@ -25,6 +25,10 @@ class ATAttribute(base.ATAttribute):
         is_ref = self.isReference(instance)
         
         for value in values:
+            if instance.Type() == 'Folder':
+                # allowed types are acquired from parent    
+                if instance.getConstrainTypesMode() != 1 and self.name in ['locallyAllowedTypes','immediatelyAddableTypes']:
+                    continue
             node = dom.createElementNS(self.namespace.xmlns, "field")
             name_attr = dom.createAttribute("name")
             name_attr.value = self.name

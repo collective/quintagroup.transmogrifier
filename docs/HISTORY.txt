@@ -3,6 +3,11 @@ Changelog
 
 0.4 (Unreleased)
 ----------------
+- cmfns cleanup, local_roles override due to unicode errors
+  [chervol]
+
+- Allowed types acquisition case switch added
+  [chervol]
 
 - Yield items in manifest order from manifest importer section.
   [elro]

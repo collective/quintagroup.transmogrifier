@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.4 (Unreleased)
+0.4 (21-04-2011)
 ----------------
 
 - Multiple path export support added to sitewalker

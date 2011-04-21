@@ -1,27 +1,31 @@
-***************************************
 Export/import transmogrifier blueprints
-***************************************
-
-.. contents::
+=======================================
 
 This package contains blueprints for collective.transmogrifier
 pipelines, that may be used to export/import Plone site content.
 It also overrides GenericSetup ``Content`` step so this package
 can be used out-the-box to migrate site content.
 
+Links
+-----
+
+Documentation and examples: http://projects.quintagroup.com/products/wiki/quintagroup.transmogrifier
+
+
 Credits
-*******
+-------
 
 Design and development
 
-    - Bohdan Koval _ at Quintagroup_
-    - Andriy Mylenkyy _ at Quintagroup_
-    - Taras Melnychuk _ at Quintagroup_
-    - Vitaliy Stepanov _ at Quintagroup_
+    - Bohdan Koval
+    - Andriy Mylenkyy
+    - Taras Melnychuk
+    - Vitaliy Stepanov
     - Vitaliy Podoba
-    - Volodymyr Cherepanyak _ at Quintagroup_
-    - Myroslav Opyr _ at Quintagroup_
+    - Volodymyr Cherepanyak 
+    - Myroslav Opyr 
     - Tom Lazar
+    - Maurits Van Rees
+    - Laurence Rowe
+    - Mikko Ohtamaa
 
-
-.. _Quintagroup: http://www.quintagroup.com/

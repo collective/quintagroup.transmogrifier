@@ -3,6 +3,10 @@ Changelog
 
 0.4 (Unreleased)
 ----------------
+- Simple transformation fallback added for straight forward type substitution 
+  scenario, correspondent test updated 
+  [chervol, kroman0]
+
 - cmfns cleanup, local_roles override due to unicode errors
   [chervol]
 

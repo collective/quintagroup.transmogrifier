@@ -749,7 +749,11 @@ def xsltSetUp(test):
                 {'_old_type': 'Blog',
                  '_type': 'Weblog',
                  '_files': {'marshall': {'data': 'xml', 'name': 'marshall.xml'}}},
+                 {'_old_type': 'Large Plone Folder',
+                  '_type': 'Folder',
+                  '_files': {'marshall': {'data': 'xml', 'name': 'marshall.xml'}}},
             )
+            
 
     provideUtility(XSLTSource,
         name=u'quintagroup.transmogrifier.tests.xsltsource')

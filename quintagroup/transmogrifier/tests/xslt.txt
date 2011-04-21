@@ -32,6 +32,10 @@ ZCML directive. If item hasn't those keys, it will be skipped.
 >>> import tempfile
 >>> tmp = tempfile.NamedTemporaryFile('w+', suffix='.xsl')
 >>> tmp.flush()
+
+We register only the 'Blog' to 'Weblog' conversion while 'Large Plone Folder' 
+to 'Folder' relies on the fallback branch.
+
 >>> stylesheet_registry.registerStylesheet('marshall', 'Blog', 'Weblog', tmp.name)
 >>> xslt = """
 ... [transmogrifier]
@@ -53,7 +57,7 @@ ZCML directive. If item hasn't those keys, it will be skipped.
 ... blueprint = collective.transmogrifier.sections.tests.pprinter
 ... """
 >>> registerConfig(u'quintagroup.transmogrifier.tests.xslt', xslt)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.xslt') # doctest: +ELLIPSIS, +REPORT_NDIFF
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.xslt') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
 []
 [('_type', 'Weblog')]
 [('_old_type', 'Blog')]
@@ -64,3 +68,7 @@ ZCML directive. If item hasn't those keys, it will be skipped.
   [('marshall', [('data', 'transformed xml'), ('name', 'marshall.xml')])]),
  ('_old_type', 'Blog'),
  ('_type', 'Weblog')]
+[('_files',
+  [('marshall', [('data', 'transformed xml'), ('name', 'marshall.xml')])]),
+ ('_old_type', 'Large Plone Folder'),
+ ('_type', 'Folder')]

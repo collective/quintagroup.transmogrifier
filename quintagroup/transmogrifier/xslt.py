@@ -6,6 +6,7 @@ except ImportError:
 else:
     HAS_LIBS = True
 
+from StringIO import StringIO
 from zope.interface import classProvides, implements, Interface
 from zope.configuration.fields import Path
 from zope.schema import TextLine
@@ -13,6 +14,23 @@ from zope.schema import TextLine
 from collective.transmogrifier.interfaces import ISectionBlueprint
 from collective.transmogrifier.interfaces import ISection
 from collective.transmogrifier.utils import defaultMatcher
+
+xsl_template = """\
+<xsl:stylesheet version="1.0" 
+     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+     xmlns:at="http://plone.org/ns/archetypes/"
+     xmlns:cmf="http://cmf.zope.org/namespaces/default/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">    
+ <xsl:template match="@*|node()">
+     <xsl:copy>
+       <xsl:apply-templates select="@*|node()"/>
+     </xsl:copy>
+ </xsl:template>
+ <xsl:template match="cmf:type/text()">
+   %s
+ </xsl:template>
+</xsl:stylesheet>
+"""
 
 class StylesheetRegistry(object):
     def __init__(self):
@@ -122,7 +140,15 @@ class XSLTSection(object):
             to = item[tokey]
             stylesheet_info = stylesheet_registry.getStylesheet(source, from_, to)
 
+            # no .xsl transformation was registered to convert item fromkey -> tokey 
             if stylesheet_info is None:
+                # fallback for simple case of type substitution  
+                if tokey == '_type':
+                    stylesheet = StringIO(xsl_template % item[tokey])
+                    source_dict = item[fileskey][source]
+                    source_dict['data'] = self.applyTransformations(source_dict['data'], stylesheet)
+                    if not stylesheet.closed:
+                        stylesheet.close()
                 yield item; continue
 
             fp = open(stylesheet_info['file'], 'r')

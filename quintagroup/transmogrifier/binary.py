@@ -10,6 +10,12 @@ from Products.Archetypes.interfaces import IBaseObject
 from collective.transmogrifier.interfaces import ISection, ISectionBlueprint
 from collective.transmogrifier.utils import defaultMatcher, Condition
 
+try:
+    from plone.app.blob.interfaces import IBlobField
+    HAS_BLOB = True
+except ImportError:
+    HAS_BLOB = False
+
 class FileExporterSection(object):
     classProvides(ISectionBlueprint)
     implements(ISection)
@@ -80,16 +86,22 @@ class FileExporterSection(object):
         """ Return tuple of (filename, content_type, data)
         """
         field = obj.getField(field)
-        # temporarily:
-        # dirty call, I know, just lazy to get method arguments
-        # TextField overrided getBaseUnit method but didn't follow API
-        try:
-            base_unit = field.getBaseUnit(obj, full=True)
-        except TypeError:
-            base_unit = field.getBaseUnit(obj)
-        fname = base_unit.getFilename() 
-        ct = base_unit.getContentType()
-        value = base_unit.getRaw()
+        if HAS_BLOB and IBlobField.providedBy(field):
+            wrapper = field.getRaw(obj)
+            value = str(wrapper)
+            fname = wrapper.getFilename()
+            ct = wrapper.getContentType()
+        else:
+	    # temporarily:
+	    # dirty call, I know, just lazy to get method arguments
+	    # TextField overrided getBaseUnit method but didn't follow API
+	    try:
+		base_unit = field.getBaseUnit(obj, full=True)
+	    except TypeError:
+		base_unit = field.getBaseUnit(obj)
+	    fname = base_unit.getFilename() 
+	    ct = base_unit.getContentType()
+	    value = base_unit.getRaw()
 
         return fname, ct, value
 

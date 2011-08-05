@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.5 (svn/unreleased)
+--------------------
+
+- Fixed export of Blobs
+  [tom_gross]
+
 0.4 (21-04-2011)
 ----------------
 

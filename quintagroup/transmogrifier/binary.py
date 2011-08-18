@@ -90,7 +90,11 @@ class FileExporterSection(object):
             wrapper = field.getRaw(obj)
             value = str(wrapper)
             fname = wrapper.getFilename()
+            if fname is None:
+                fname = ''
             ct = wrapper.getContentType()
+            if ct is None:
+                ct = ''
         else:
             # temporarily:
             # dirty call, I know, just lazy to get method arguments

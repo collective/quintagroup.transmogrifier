@@ -31,23 +31,24 @@ def writeDataFile( self, filename, text, content_type, subdir=None ):
                 self._archive.addfile(info, StringIO())
             parents = parents[:-1]
 
-        filename = '/'.join( ( subdir, filename ) )
+        filename = '/'.join((subdir, filename))
 
-    stream = StringIO( text )
-    info = TarInfo( filename )
-    info.size = len( text )
+    stream = StringIO(text)
+    info = TarInfo(filename)
+    info.size = len(text)
     info.mode = 436
     info.mtime = mod_time
-    self._archive.addfile( info, stream )
+    self._archive.addfile(info, stream)
 
-if PYTHON_VERSION < (2,6):
+if PYTHON_VERSION < (2, 6):
     from Products.GenericSetup.context import TarballExportContext
     TarballExportContext.writeDataFile = writeDataFile
 
 from Products.GenericSetup.context import SKIPPED_FILES, SKIPPED_SUFFIXES
 
+
 def listDirectory(self, path, skip=SKIPPED_FILES,
-                    skip_suffixes=SKIPPED_SUFFIXES):
+                  skip_suffixes=SKIPPED_SUFFIXES):
 
     """ See IImportContext.
     """
@@ -81,60 +82,61 @@ def listDirectory(self, path, skip=SKIPPED_FILES,
 
     return names
 
-if PYTHON_VERSION < (2,6):
+if PYTHON_VERSION < (2, 6):
     from Products.GenericSetup.context import TarballImportContext
     TarballImportContext.listDirectory = listDirectory
 
 # patch for this bug in tarfile module - http://bugs.python.org/issue1719898
-from tarfile import nts, GNUTYPE_SPARSE, normpath
-def frombuf(cls, buf):
-    """Construct a TarInfo object from a 512 byte string buffer.
-    """
-    tarinfo = cls()
-    tarinfo.name   = nts(buf[0:100])
-    tarinfo.mode   = int(buf[100:108], 8)
-    tarinfo.uid    = int(buf[108:116],8)
-    tarinfo.gid    = int(buf[116:124],8)
+if PYTHON_VERSION == (2, 4):
+    from tarfile import nts, GNUTYPE_SPARSE, normpath
 
-    # There are two possible codings for the size field we
-    # have to discriminate, see comment in tobuf() below.
-    if buf[124] != chr(0200):
-        tarinfo.size = long(buf[124:136], 8)
-    else:
-        tarinfo.size = 0L
-        for i in range(11):
-            tarinfo.size <<= 8
-            tarinfo.size += ord(buf[125 + i])
+    def frombuf(cls, buf):
+        """Construct a TarInfo object from a 512 byte string buffer.
+        """
+        tarinfo = cls()
+        tarinfo.name = nts(buf[0:100])
+        tarinfo.mode = int(buf[100:108], 8)
+        tarinfo.uid = int(buf[108:116], 8)
+        tarinfo.gid = int(buf[116:124], 8)
 
-    tarinfo.mtime  = long(buf[136:148], 8)
-    tarinfo.chksum = int(buf[148:156], 8)
-    tarinfo.type   = buf[156:157]
-    tarinfo.linkname = nts(buf[157:257])
-    tarinfo.uname  = nts(buf[265:297])
-    tarinfo.gname  = nts(buf[297:329])
-    try:
-        tarinfo.devmajor = int(buf[329:337], 8)
-        tarinfo.devminor = int(buf[337:345], 8)
-    except ValueError:
-        tarinfo.devmajor = tarinfo.devmajor = 0
-    tarinfo.prefix = buf[345:500]
+        # There are two possible codings for the size field we
+        # have to discriminate, see comment in tobuf() below.
+        if buf[124] != chr(0200):
+            tarinfo.size = long(buf[124:136], 8)
+        else:
+            tarinfo.size = 0L
+            for i in range(11):
+                tarinfo.size <<= 8
+                tarinfo.size += ord(buf[125 + i])
 
-    # The prefix field is used for filenames > 100 in
-    # the POSIX standard.
-    # name = prefix + '/' + name
-    if tarinfo.type != GNUTYPE_SPARSE:
-        tarinfo.name = normpath(os.path.join(nts(tarinfo.prefix), tarinfo.name))
+        tarinfo.mtime = long(buf[136:148], 8)
+        tarinfo.chksum = int(buf[148:156], 8)
+        tarinfo.type = buf[156:157]
+        tarinfo.linkname = nts(buf[157:257])
+        tarinfo.uname = nts(buf[265:297])
+        tarinfo.gname = nts(buf[297:329])
+        try:
+            tarinfo.devmajor = int(buf[329:337], 8)
+            tarinfo.devminor = int(buf[337:345], 8)
+        except ValueError:
+            tarinfo.devmajor = tarinfo.devmajor = 0
+        tarinfo.prefix = buf[345:500]
 
-    # Some old tar programs represent a directory as a regular
-    # file with a trailing slash.
-    if tarinfo.isreg() and tarinfo.name.endswith("/"):
-        tarinfo.type = DIRTYPE
+        # The prefix field is used for filenames > 100 in
+        # the POSIX standard.
+        # name = prefix + '/' + name
+        if tarinfo.type != GNUTYPE_SPARSE:
+            tarinfo.name = normpath(os.path.join(nts(tarinfo.prefix), tarinfo.name))
 
-    # Directory names should have a '/' at the end.
-    if tarinfo.isdir():
-        tarinfo.name += "/"
-    return tarinfo
+        # Some old tar programs represent a directory as a regular
+        # file with a trailing slash.
+        if tarinfo.isreg() and tarinfo.name.endswith("/"):
+            tarinfo.type = DIRTYPE
 
-if PYTHON_VERSION == (2,4):
+        # Directory names should have a '/' at the end.
+        if tarinfo.isdir():
+            tarinfo.name += "/"
+        return tarinfo
+
     frombuf = classmethod(frombuf)
     TarInfo.frombuf = frombuf

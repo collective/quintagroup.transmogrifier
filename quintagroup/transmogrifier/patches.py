@@ -88,7 +88,8 @@ if PYTHON_VERSION < (2, 6):
 
 # patch for this bug in tarfile module - http://bugs.python.org/issue1719898
 if PYTHON_VERSION == (2, 4):
-    from tarfile import nts, GNUTYPE_SPARSE, normpath
+    from tarfile import nts, GNUTYPE_SPARSE
+    from os.path import normpath
 
     def frombuf(cls, buf):
         """Construct a TarInfo object from a 512 byte string buffer.

@@ -37,9 +37,10 @@ setup(name='quintagroup.transmogrifier',
       install_requires=[
           'setuptools',
           'collective.transmogrifier',
+          'lxml'
           'plone.app.transmogrifier',
-          'collective.testcaselayer',
-          'zope.app.container'
+#          'collective.testcaselayer',
+          'zope.app.container',
       ],
       extras_require = {
         "tests": ["collective.testcaselayer"],

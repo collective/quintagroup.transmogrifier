@@ -38,8 +38,8 @@ setup(name='quintagroup.transmogrifier',
           'setuptools',
           'collective.transmogrifier',
           'plone.app.transmogrifier',
-          'collective.testcaselayer'
-          # -*- Extra requirements: -*-
+          'collective.testcaselayer',
+          'zope.app.container'
       ],
       extras_require = {
         "tests": ["collective.testcaselayer"],

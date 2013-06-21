@@ -70,12 +70,8 @@ way we prevent confusion with interfaces, implemented by class itself.
  ('_path', 'spam/eggs/foo')]
 <?xml version="1.0" encoding="utf-8"?>
 <interfaces>
-  <record>
-    zope.annotation.interfaces.IAttributeAnnotatable
-  </record>
-  <record>
-    zope.interface.Interface
-  </record>
+  <record>zope.annotation.interfaces.IAttributeAnnotatable</record>
+  <record>zope.interface.Interface</record>
 </interfaces>
 <BLANKLINE>
 

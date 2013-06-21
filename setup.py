@@ -37,7 +37,7 @@ setup(name='quintagroup.transmogrifier',
       install_requires=[
           'setuptools',
           'collective.transmogrifier',
-          'lxml'
+          'lxml',
           'plone.app.transmogrifier',
 #          'collective.testcaselayer',
           'zope.app.container',
@@ -47,7 +47,7 @@ setup(name='quintagroup.transmogrifier',
       },
       entry_points="""
       # -*- Entry points: -*-
-      
+
       [z3c.autoinclude.plugin]
       target = plone      
       """,

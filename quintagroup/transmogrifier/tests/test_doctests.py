@@ -1,8 +1,9 @@
 import unittest
 import pprint
 import os
+import doctest
 
-from zope.testing import doctest, cleanup
+from zope.testing import cleanup
 from zope.component import provideUtility, provideAdapter, adapts
 from zope.interface import classProvides, implements
 

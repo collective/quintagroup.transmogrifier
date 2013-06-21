@@ -27,14 +27,14 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
         # them, but these aren't stripped on import. Maybe this method doesn't handle
         # properly multiline string values, but it is needed for importing.
         text = ''
-        for child in node.childNodes:
+        for child in node:
             if child.tag != '#text':
                 continue
-            text += child.nodeValue.strip()
+            text += child.text.strip()
         return text
 
     def _extractProperties(self):
-        fragment = etree.SubElement(self._doc, "document-fragment")
+        fragment = etree.Element("root")
 
         for prop_map in self.context._propertyMap():
             prop_id = prop_map['id']
@@ -84,9 +84,7 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
         if 'i18n:domain' in node.attrib:
             i18n_domain = str(node.attrib['i18n:domain'])
             obj._updateProperty('i18n_domain', i18n_domain)
-        for child in node:
-            if child.tag != 'property':
-                continue
+        for child in node.iter(tag='property'):
             prop_id = str(child.attrib['name'])
             prop_map = obj.propdict().get(prop_id, None)
 
@@ -97,6 +95,7 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
                     obj._setProperty(prop_id, val, prop_type)
                     prop_map = obj.propdict().get(prop_id, None)
                 else:
+                    import pdb; pdb.set_trace()
                     raise ValueError("undefined property '%s'" % prop_id)
 
             if not 'w' in prop_map.get('mode', 'wd'):
@@ -124,12 +123,14 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
                 prop_value = tuple(elements) or ()
             elif prop_map.get('type') == 'boolean':
                 prop_value = self._convertToBoolean(self._getNodeText(child))
+            elif isinstance(child.text, unicode):
+                prop_value = child.text.encode(self._encoding)
             else:
                 # if we pass a *string* to _updateProperty, all other values
                 # are converted to the right type
-                prop_value = child.text.encode(self._encoding)
+                prop_value = child.text
 
-            if not self._convertToBoolean(child.attrib['purge'] or 'True'):
+            if not self._convertToBoolean(child.attrib.get('purge') or 'True'):
                 # If the purge attribute is False, merge sequences
                 prop = obj.getProperty(prop_id)
                 if isinstance(prop, (tuple, list)):
@@ -156,7 +157,7 @@ class PropertiesExporterSection(object):
                               options.get('exclude', '').splitlines()])
 
         self.helper = Helper()
-        self.doc = etree.Element('root')
+        self.doc = etree.Element('properties')
         self.helper._doc = self.doc
 
     def __iter__(self):
@@ -182,16 +183,12 @@ class PropertiesExporterSection(object):
                     excluded_props = tuple(set(item[excludekey]) | set(excluded_props))
 
                 helper.context = obj
-                node = etree.SubElement(doc, 'properties')
-                for elem in helper._extractProperties():
-                    if elem.tag != 'property':
-                        continue
+                for elem in helper._extractProperties().iter(tag='property'):
                     if elem.attrib['name'] not in excluded_props:
-                        node.append(deepcopy(elem))
-                if len(node):
-                    doc.append(node)
-                    data = etree.tostring(doc)
-                    #doc.unlink()
+                        doc.append(deepcopy(elem))
+                if len(doc):
+                    data = etree.tostring(doc, xml_declaration=True,
+                                          encoding='utf-8', pretty_print=True)
 
                 if data:
                     item.setdefault(self.fileskey, {})
@@ -250,7 +247,7 @@ class PropertiesImporterSection(object):
                     if child.tag != 'property':
                         continue
                     if child.attrib['name'] in excluded_props:
-                        del root[child]
+                        doc.remove(child)
 
                 helper.context = obj
                 helper._initProperties(doc)

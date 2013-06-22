@@ -45,7 +45,7 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
             if 'w' not in prop_map.get('mode', 'wd'):
                 continue
 
-            node = etree.SubElement(self._doc, 'property')
+            node = etree.SubElement(fragment, 'property')
             node.attrib['name'] = prop_id
 
             prop = self.context.getProperty(prop_id)
@@ -53,7 +53,7 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
                 for value in prop:
                     if isinstance(value, str):
                         value = value.decode(self._encoding)
-                    child = etree.SubElement(self._doc, 'element')
+                    child = etree.SubElement(node, 'element')
                     child.text = value
                     node.append(child)
             else:
@@ -77,7 +77,7 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
 
             fragment.append(node)
 
-        return fragment
+        return fragment.iter(tag='property')
 
     def _initProperties(self, node):
         obj = self.context
@@ -87,7 +87,6 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
         for child in node.iter(tag='property'):
             prop_id = str(child.attrib['name'])
             prop_map = obj.propdict().get(prop_id, None)
-
             if prop_map is None:
                 if 'type' in child.attrib:
                     val = str(child.attrib['select_variable'])
@@ -95,7 +94,6 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
                     obj._setProperty(prop_id, val, prop_type)
                     prop_map = obj.propdict().get(prop_id, None)
                 else:
-                    import pdb; pdb.set_trace()
                     raise ValueError("undefined property '%s'" % prop_id)
 
             if not 'w' in prop_map.get('mode', 'wd'):
@@ -183,12 +181,13 @@ class PropertiesExporterSection(object):
                     excluded_props = tuple(set(item[excludekey]) | set(excluded_props))
 
                 helper.context = obj
-                for elem in helper._extractProperties().iter(tag='property'):
+                for elem in helper._extractProperties():
                     if elem.attrib['name'] not in excluded_props:
                         doc.append(deepcopy(elem))
                 if len(doc):
                     data = etree.tostring(doc, xml_declaration=True,
                                           encoding='utf-8', pretty_print=True)
+                    doc.clear()
 
                 if data:
                     item.setdefault(self.fileskey, {})

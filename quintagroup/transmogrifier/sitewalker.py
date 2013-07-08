@@ -61,17 +61,17 @@ class SiteWalkerSection(object):
     def __iter__(self):
         for item in self.previous:
             yield item
-	    # Determine the object from which to start walking.  
+        # Determine the object from which to start walking.
         if self.start_path:
             # We only want to export a part of the site.
             for cur_start_path in self.start_path:
-		        start_obj = self.context.restrictedTraverse(cur_start_path)
-		        for item in self.walker(start_obj):
-		            yield item	    
+                start_obj = self.context.restrictedTraverse(cur_start_path)
+                for item in self.walker(start_obj):
+                    yield item
         else:
             start_obj = self.context
             for item in self.walker(start_obj):
-		        yield item
+                yield item
 
 
         # cleanup

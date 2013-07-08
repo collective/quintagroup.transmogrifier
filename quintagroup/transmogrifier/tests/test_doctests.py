@@ -95,11 +95,20 @@ def siteWalkerSetUp(test):
         contentItems = dict.items
         contentValues = dict.values
 
+
+    class MockURLTool(object):
+
+        def getRelativeContentURL(self, obj):
+            return '/'.join(obj.getPhysicalPath()[2:])
+
     class MockPortal(MockContent, dict):
         implements(IFolderish)
 
         contentItems = dict.items
         contentValues = dict.values
+
+        portal_url = MockURLTool()
+
 
     portal = MockPortal()
 
@@ -117,6 +126,7 @@ def siteWalkerSetUp(test):
     portal['folder1']['folder2'].path = ('', 'plone', 'folder1', 'folder2')
     portal['document3'] = Document()
     portal['document3'].path = ('', 'plone', 'document3')
+
 
 def manifestSetUp(test):
     sectionsSetUp(test)

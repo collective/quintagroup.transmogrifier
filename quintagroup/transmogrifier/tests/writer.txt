@@ -28,6 +28,8 @@ export contexts. The writer section blueprint name is
 ... """
 >>> registerConfig(u'quintagroup.transmogrifier.tests.writer', writer)
 >>> transmogrifier(u'quintagroup.transmogrifier.tests.writer') # doctest: +ELLIPSIS, +REPORT_NDIFF
+[]
+[]
 [('structure/spam/eggs/foo/.second.xml', 'other data', 'application/xml'),
  ('structure/spam/eggs/foo/.first.xml', 'some data', 'application/xml')]
 [('structure/spam/eggs/foo/.second.xml', 'other data', 'application/xml'),

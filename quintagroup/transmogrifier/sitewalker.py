@@ -5,6 +5,7 @@ from collective.transmogrifier.interfaces import ISection, ISectionBlueprint
 from collective.transmogrifier.utils import Condition
 
 from Products.CMFCore.interfaces import IFolderish
+from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.interfaces import IBaseFolder
 
 from quintagroup.transmogrifier.logger import VALIDATIONKEY
@@ -29,6 +30,7 @@ class SiteWalkerSection(object):
 
         self.condition = Condition(options.get('condition', 'python:True'),
                                    transmogrifier, name, options)
+        self.urltool = getToolByName(self.context, 'portal_url')
 
     def getContained(self, obj):
         contained = [(k, v) for k, v in obj.contentItems()
@@ -49,7 +51,7 @@ class SiteWalkerSection(object):
         """ build items stack for each of star paths"""
         for obj, contained in self.walk(start_obj):
             item = {
-                self.pathkey: '/'.join(obj.getPhysicalPath()[2:]),
+                self.pathkey: self.urltool.getRelativeContentURL(obj),
                 self.typekey: obj.getPortalTypeName(),
             }
             if contained:

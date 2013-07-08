@@ -85,8 +85,13 @@ and ``type-key`` option that gives key to store item's portal type (default is
   <record type="File">once-more</record>
 </manifest>
 <BLANKLINE>
-[('_path', 'news/aggregator'), ('_type', 'Topic')]
 [('_path', 'events'), ('_type', 'Folder')]
 [('_path', 'front-page'), ('_type', 'Document')]
 [('_path', 'only-in-manifest'), ('_type', 'Document')]
+[('_path', 'news/aggregator'), ('_type', 'Topic')]
 [('_path', 'news/once-more'), ('_type', 'File')]
+[('_path', 'events')]
+[('_path', 'news'), ('_type', 'Folder')]
+[('_path', 'events'), ('_type', 'Folder')]
+[('_path', 'front-page'), ('_type', 'Document')]
+[('_path', 'only-in-manifest'), ('_type', 'Document')]

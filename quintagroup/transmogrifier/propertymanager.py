@@ -15,9 +15,9 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
         method uses _convertToBoolean and _getNodeText methods from
         NodeAdapterBase class.
     """
-    
+
     _encoding = 'utf-8'
-    
+
     def __init__(self):
         pass
 

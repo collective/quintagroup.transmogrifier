@@ -89,7 +89,7 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
             prop_map = obj.propdict().get(prop_id, None)
             if prop_map is None:
                 if 'type' in child.attrib:
-                    val = str(child.attrib['select_variable'])
+                    val = str(child.attrib.get('select_variable', ''))
                     prop_type = str(child.attrib['type'])
                     obj._setProperty(prop_id, val, prop_type)
                     prop_map = obj.propdict().get(prop_id, None)

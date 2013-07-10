@@ -6,6 +6,7 @@ env:
   - PLONE=4.0
   - PLONE=4.1
   - PLONE=4.2
+  - PLONE=4.3
 matrix:
   exclude:
     - python: 2.7
@@ -14,6 +15,8 @@ matrix:
       env: PLONE=4.1
     - python: 2.6
       env: PLONE=4.2
+    - python: 2.6
+      env: PLONE=4.3
 before_install:
   - pip install http://effbot.org/downloads/Imaging-1.1.6.tar.gz
   - sudo apt-get install -qq libxml2-dev libxslt-dev

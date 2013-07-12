@@ -50,12 +50,16 @@ def sectionsSetUp(test):
     import Products.Five
     import Products.GenericSetup
     import zope.annotation
-    import AccessControl
     zcml.load_config('meta.zcml', Products.Five)
     zcml.load_config('permissions.zcml', Products.Five)
     zcml.load_config('meta.zcml', Products.GenericSetup)
     zcml.load_config('configure.zcml', zope.annotation)
-    zcml.load_config('permissions.zcml', AccessControl)
+    try:
+        from plone.app.upgrade import v41
+        import AccessControl
+        zcml.load_config('permissions.zcml', AccessControl)
+    except ImportError:
+        pass
     zcml.load_config('configure.zcml', quintagroup.transmogrifier)
 
     from Products.CMFCore import utils

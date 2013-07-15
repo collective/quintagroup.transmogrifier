@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<properties>
+  <property name="description">
+    
+  </property>
+  <property name="selectable_views" type="lines">
+    <element>
+      folder_listing
+    </element>
+    <element>
+      news_listing
+    </element>
+  </property>
+  <property name="email_from_address" type="string">
+    
+  </property>
+  <property name="email_from_name" type="string">
+    
+  </property>
+  <property name="validate_email" type="boolean">
+    True
+  </property>
+  <property name="email_charset" type="string">
+    utf-8
+  </property>
+  <property name="enable_permalink" type="boolean">
+    False
+  </property>
+  <property name="default_page" type="string">
+    front-page
+  </property>
+</properties>

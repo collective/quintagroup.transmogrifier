@@ -106,7 +106,10 @@ class DemarshallerSection(object):
             if IBaseObject.providedBy(obj):
                 try:
                     data = item[fileskey]['marshall']['data']
-                    self.atxml.demarshall(obj, data)
+                    try:
+                        self.atxml.demarshall(obj, data)
+                    except SyntaxError:
+                        yield item; continue
 
                     # When we change workflow state of content through Plone interface,
                     # effective date field will be updated to current date (the same

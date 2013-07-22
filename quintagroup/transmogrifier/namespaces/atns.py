@@ -145,8 +145,6 @@ class Archetypes(base.Archetypes):
         if context is not None and schema_name not in self.at_fields:
             if not context.instance.Schema().has_key(schema_name):
                 return
-                raise AssertionError, \
-                      "invalid attribute %s"%(schema_name)
 
         if schema_name in self.at_fields:
             return self.at_fields[schema_name]

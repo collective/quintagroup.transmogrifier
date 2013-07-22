@@ -6,7 +6,7 @@ from zope.component import getUtilitiesFor, queryMultiAdapter, getUtility, \
     getMultiAdapter, adapts
 from zope.component.interfaces import IFactory
 from zope.container.interfaces import INameChooser
-from zope.schema._bootstrapinterfaces import ConstraintNotSatisfied
+from zope.schema.interfaces import ConstraintNotSatisfied
 from zope.schema.interfaces import ICollection
 
 

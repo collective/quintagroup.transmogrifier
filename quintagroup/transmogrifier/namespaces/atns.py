@@ -17,23 +17,23 @@ class ATAttribute(base.ATAttribute):
 
 
     def serialize(self, dom, parent_node, instance, options={}):
-        
+
         values = self.get(instance)
         if not values:
             return
 
         is_ref = self.isReference(instance)
-        
+
         for value in values:
             if instance.Type() == 'Folder':
-                # allowed types are acquired from parent    
+                # allowed types are acquired from parent
                 if instance.getConstrainTypesMode() != 1 and self.name in ['locallyAllowedTypes','immediatelyAddableTypes']:
                     continue
             node = dom.createElementNS(self.namespace.xmlns, "field")
             name_attr = dom.createAttribute("name")
             name_attr.value = self.name
             node.setAttributeNode(name_attr)
-            
+
             # try to get 'utf-8' encoded string
             if isinstance(value, unicode):
                 value = value.encode('utf-8')
@@ -69,7 +69,7 @@ class ATAttribute(base.ATAttribute):
                 mime_attr = dom.createAttribute('mimetype')
                 mime_attr.value = field.getContentType(instance)
                 node.setAttributeNode(mime_attr)
-        
+
             node.normalize()
             parent_node.appendChild(node)
 
@@ -93,7 +93,7 @@ class ATAttribute(base.ATAttribute):
         mimetype = context.node.get('mimetype', None)
         if mimetype is not None:
             data['mimetype'] = mimetype
-        
+
         if data.has_key('value'):
             svalues = data['value']
             if not isinstance(svalues, list):
@@ -127,10 +127,10 @@ class ATAttribute(base.ATAttribute):
             field = instance.getField( self.name ).set( instance, values )
             #raise AttributeError("No Mutator for %s"%self.name)
             return
-        
+
         if self.name == "id":
             transaction.savepoint()
-            
+
         mutator(values)
 
         # set mimetype if possible
@@ -147,11 +147,11 @@ class Archetypes(base.Archetypes):
                 return
                 raise AssertionError, \
                       "invalid attribute %s"%(schema_name)
-        
+
         if schema_name in self.at_fields:
             return self.at_fields[schema_name]
 
         attribute = ATAttribute(schema_name)
         attribute.setNamespace(self)
-        
+
         return attribute

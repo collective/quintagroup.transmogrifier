@@ -18,6 +18,9 @@ Changelog
 - Apply patch which fixes import of tarballs not available in Plone 4.2
   [tom_gross]
 
+- Be more failsafe in pathological situations
+  [tom_gross]
+
 0.4 (21-04-2011)
 ----------------
 

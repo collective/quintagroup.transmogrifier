@@ -34,6 +34,8 @@ class LocalRolesAttribute(base.LocalRolesAttribute):
     def get(self, instance):
         """ overide local roles reader due to rare usecase of non-unicode strings in migrated Plone instances."""
         lr = getattr( instance, '__ac_local_roles__', {})
+        if lr is None:
+            return {}
         for k in lr.keys():
             for i in range(len(lr[k])):
                 lr[k][i] = lr[k][i].encode('utf-8')

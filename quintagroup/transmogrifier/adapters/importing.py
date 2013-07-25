@@ -25,7 +25,6 @@ class ReferenceImporter(object):
         self.transmogrifier = transmogrifier
 
     def __call__(self, data):
-        # uid = self.context.UID()
         uid = self.getUID(data['data'])
         if uid:
             EXISTING_UIDS[uid] = None

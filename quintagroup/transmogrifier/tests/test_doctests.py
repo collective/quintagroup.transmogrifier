@@ -14,8 +14,13 @@ from collective.transmogrifier.sections.tests import SampleSource
 
 from Products.Five import zcml
 
+from lxml import etree
+
 import quintagroup.transmogrifier
 from quintagroup.transmogrifier.xslt import stylesheet_registry
+
+def stdprint(s):
+    print(s)  # this needs at least Python 2.6
 
 class DataPrinter(object):
     classProvides(ISectionBlueprint)
@@ -26,6 +31,10 @@ class DataPrinter(object):
         self.printkey = [i.strip() for i in options['print'].splitlines() if i.strip()]
         if 'prettyprint' in options:
             self.pprint = pprint.PrettyPrinter().pprint
+        else:
+            self.pprint = stdprint
+
+        self.normxml = 'normxml' in options
 
     def __iter__(self):
         for item in self.previous:
@@ -38,10 +47,10 @@ class DataPrinter(object):
                         data = None
                         break
                 if data is not None:
-                    if hasattr(self, 'pprint'):
-                        self.pprint(data)
-                    else:
-                        print data
+                    if self.normxml:
+                        data = etree.tostring(etree.fromstring(data),
+                                              xml_declaration=True)
+                    self.pprint(data)
             yield item
 
 ctSectionsSetup = sectionsSetUp

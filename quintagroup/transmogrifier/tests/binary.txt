@@ -68,8 +68,12 @@ this or another binary field only if condition expression evaluates to true.
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
   <field name="file">
-    <filename>archive.tar.gz</filename>
-    <mimetype>application/x-tar</mimetype>
+    <filename>
+      archive.tar.gz
+    </filename>
+    <mimetype>
+      application/x-tar
+    </mimetype>
   </field>
 </manifest>
 <BLANKLINE>

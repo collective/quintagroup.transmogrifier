@@ -49,7 +49,8 @@ class DataPrinter(object):
                 if data is not None:
                     if self.normxml:
                         data = etree.tostring(etree.fromstring(data),
-                                              xml_declaration=True)
+                                              xml_declaration=True,
+                                              encoding='utf-8')
                     self.pprint(data)
             yield item
 

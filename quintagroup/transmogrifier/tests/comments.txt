@@ -56,22 +56,46 @@ key where XML data will be or is stored.
 <?xml version="1.0" encoding="utf-8"?>
 <discussion>
   <item id="1">
-    <field name="Creator">creator</field>
-    <field name="Modification_date">date</field>
-    <field name="In_reply_to">None</field>
-    <field name="Text">comment to content</field>
+    <field name="Creator">
+      creator
+    </field>
+    <field name="Modification_date">
+      date
+    </field>
+    <field name="In_reply_to">
+      None
+    </field>
+    <field name="Text">
+      comment to content
+    </field>
   </item>
   <item id="2">
-    <field name="Creator">creator</field>
-    <field name="Modification_date">date</field>
-    <field name="In_reply_to">1</field>
-    <field name="Text">reply to first comment</field>
+    <field name="Creator">
+      creator
+    </field>
+    <field name="Modification_date">
+      date
+    </field>
+    <field name="In_reply_to">
+      1
+    </field>
+    <field name="Text">
+      reply to first comment
+    </field>
   </item>
   <item id="3">
-    <field name="Creator">creator</field>
-    <field name="Modification_date">date</field>
-    <field name="In_reply_to">None</field>
-    <field name="Text">other comment to content</field>
+    <field name="Creator">
+      creator
+    </field>
+    <field name="Modification_date">
+      date
+    </field>
+    <field name="In_reply_to">
+      None
+    </field>
+    <field name="Text">
+      other comment to content
+    </field>
   </item>
 </discussion>
 <BLANKLINE>

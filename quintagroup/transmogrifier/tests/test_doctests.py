@@ -2,6 +2,7 @@ import unittest
 import pprint
 import os
 import doctest
+import re
 
 from zope.testing import cleanup
 from zope.component import provideUtility, provideAdapter, adapts
@@ -33,8 +34,7 @@ class DataPrinter(object):
             self.pprint = pprint.PrettyPrinter().pprint
         else:
             self.pprint = stdprint
-
-        self.normxml = 'normxml' in options
+        self.prettyfyxml = re.compile('>\n\s+([^<>\s].*?)\n\s+</', re.DOTALL)    
 
     def __iter__(self):
         for item in self.previous:
@@ -47,10 +47,8 @@ class DataPrinter(object):
                         data = None
                         break
                 if data is not None:
-                    if self.normxml:
-                        data = etree.tostring(etree.fromstring(data),
-                                              xml_declaration=True,
-                                              encoding='utf-8')
+                    if isinstance(data, basestring):
+                        data = self.prettyfyxml.sub('>\g<1></', data)
                     self.pprint(data)
             yield item
 

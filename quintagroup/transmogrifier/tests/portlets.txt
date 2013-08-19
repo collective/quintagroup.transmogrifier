@@ -36,7 +36,6 @@ key where XML data will be or is stored.
 ... 
 ... [dataprinter]
 ... blueprint = quintagroup.transmogrifier.tests.dataprinter
-... normxml = 1
 ... print = 
 ...     _files
 ...     portlets
@@ -57,27 +56,20 @@ key where XML data will be or is stored.
 ...
      ('name', '.portlets.xml')])]),
  ('_path', 'assignable')]
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <portlets>
   <assignment category="context" key="/assignable" manager="plone.leftcolumn" name="rss" type="portlets.rss">
-    <property name="count">
-      10
-    </property>
-    <property name="url">
-      http://sumno.com/feeds/main-page/
-    </property>
-    <property name="portlet_title">
-      RSS feed
-    </property>
-    <property name="timeout">
-      60
-    </property>
+    <property name="count">10</property>
+    <property name="url">http://sumno.com/feeds/main-page/</property>
+    <property name="portlet_title">RSS feed</property>
+    <property name="timeout">60</property>
   </assignment>
   <blacklist category="user" manager="plone.leftcolumn" status="block"/>
   <blacklist category="group" manager="plone.leftcolumn" status="acquire"/>
   <blacklist category="content_type" manager="plone.leftcolumn" status="acquire"/>
   <blacklist category="context" manager="plone.leftcolumn" status="acquire"/>
 </portlets>
+<BLANKLINE>
 [('_files',
   [('portlets',
     [('data',
@@ -89,27 +81,20 @@ key where XML data will be or is stored.
     [('data',
 ...
      ('name', '.portlets.xml')])])]
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <portlets>
   <assignment category="context" key="/other-assignable" manager="plone.leftcolumn" name="rss" type="portlets.rss">
-    <property name="count">
-      10
-    </property>
-    <property name="url">
-      http://sumno.com/feeds/main-page/
-    </property>
-    <property name="portlet_title">
-      RSS feed
-    </property>
-    <property name="timeout">
-      60
-    </property>
+    <property name="count">10</property>
+    <property name="url">http://sumno.com/feeds/main-page/</property>
+    <property name="portlet_title">RSS feed</property>
+    <property name="timeout">60</property>
   </assignment>
   <blacklist category="user" manager="plone.leftcolumn" status="block"/>
   <blacklist category="group" manager="plone.leftcolumn" status="acquire"/>
   <blacklist category="content_type" manager="plone.leftcolumn" status="acquire"/>
   <blacklist category="context" manager="plone.leftcolumn" status="acquire"/>
 </portlets>
+<BLANKLINE>
 
 
 New portlet must be added to existent ones.
@@ -160,7 +145,6 @@ and not purge existent portlets. To force purging - it must be set to ``True``.
 ... 
 ... [dataprinter]
 ... blueprint = quintagroup.transmogrifier.tests.dataprinter
-... normxml = 1
 ... print = 
 ...     _files
 ...     portlets
@@ -185,38 +169,23 @@ and not purge existent portlets. To force purging - it must be set to ``True``.
     [('data',
 ...
      ('name', '.portlets.xml')])])]
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <portlets>
   <assignment category="context" key="/other-assignable" manager="plone.leftcolumn" name="rss" type="portlets.rss">
-    <property name="count">
-      10
-    </property>
-    <property name="url">
-      http://sumno.com/feeds/main-page/
-    </property>
-    <property name="portlet_title">
-      RSS feed
-    </property>
-    <property name="timeout">
-      60
-    </property>
+    <property name="count">10</property>
+    <property name="url">http://sumno.com/feeds/main-page/</property>
+    <property name="portlet_title">RSS feed</property>
+    <property name="timeout">60</property>
   </assignment>
   <assignment category="context" key="/other-assignable" manager="plone.leftcolumn" name="habra-rss" type="portlets.rss">
-    <property name="count">
-      20
-    </property>
-    <property name="url">
-      http://habrahabr.ru/rss/
-    </property>
-    <property name="portlet_title">
-      Habrahabr RSS feed
-    </property>
-    <property name="timeout">
-      120
-    </property>
+    <property name="count">20</property>
+    <property name="url">http://habrahabr.ru/rss/</property>
+    <property name="portlet_title">Habrahabr RSS feed</property>
+    <property name="timeout">120</property>
   </assignment>
   <blacklist category="user" manager="plone.leftcolumn" status="block"/>
   <blacklist category="group" manager="plone.leftcolumn" status="acquire"/>
   <blacklist category="content_type" manager="plone.leftcolumn" status="acquire"/>
   <blacklist category="context" manager="plone.leftcolumn" status="acquire"/>
 </portlets>
+<BLANKLINE>

@@ -21,6 +21,9 @@ Changelog
 - Be more failsafe in pathological situations
   [tom_gross]
 
+- Use regex to similarize xml in tesrs on Python 2.6 and 2.7
+  [tom_gross]
+
 0.4 (21-04-2011)
 ----------------
 

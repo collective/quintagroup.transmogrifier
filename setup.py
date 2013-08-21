@@ -36,7 +36,7 @@ setup(name='quintagroup.transmogrifier',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'collective.transmogrifier',
+          'collective.transmogrifier<1.5',
           'lxml',
           'plone.app.transmogrifier',
           'zope.container',

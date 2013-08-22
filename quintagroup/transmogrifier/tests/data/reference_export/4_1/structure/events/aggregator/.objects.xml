@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+  <record type="ATPortalTypeCriterion">
+    crit__Type_ATPortalTypeCriterion
+  </record>
+  <record type="ATSortCriterion">
+    crit__start_ATSortCriterion
+  </record>
+  <record type="ATSimpleStringCriterion">
+    crit__review_state_ATSimpleStringCriterion
+  </record>
+  <record type="ATDateCriteria">
+    crit__start_ATFriendlyDateCriteria
+  </record>
+  <record type="Topic">
+    previous
+  </record>
+</manifest>

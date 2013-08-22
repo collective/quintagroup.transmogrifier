@@ -1,8 +1,10 @@
 import unittest
 import pprint
 import os
+import doctest
+import re
 
-from zope.testing import doctest, cleanup
+from zope.testing import cleanup
 from zope.component import provideUtility, provideAdapter, adapts
 from zope.interface import classProvides, implements
 
@@ -13,8 +15,13 @@ from collective.transmogrifier.sections.tests import SampleSource
 
 from Products.Five import zcml
 
+from lxml import etree
+
 import quintagroup.transmogrifier
 from quintagroup.transmogrifier.xslt import stylesheet_registry
+
+def stdprint(s):
+    print(s)  # this needs at least Python 2.6
 
 class DataPrinter(object):
     classProvides(ISectionBlueprint)
@@ -25,6 +32,9 @@ class DataPrinter(object):
         self.printkey = [i.strip() for i in options['print'].splitlines() if i.strip()]
         if 'prettyprint' in options:
             self.pprint = pprint.PrettyPrinter().pprint
+        else:
+            self.pprint = stdprint
+        self.prettyfyxml = re.compile('>\n\s+([^<>\s].*?)\n\s+</', re.DOTALL)    
 
     def __iter__(self):
         for item in self.previous:
@@ -37,10 +47,9 @@ class DataPrinter(object):
                         data = None
                         break
                 if data is not None:
-                    if hasattr(self, 'pprint'):
-                        self.pprint(data)
-                    else:
-                        print data
+                    if isinstance(data, basestring):
+                        data = self.prettyfyxml.sub('>\g<1></', data)
+                    self.pprint(data)
             yield item
 
 ctSectionsSetup = sectionsSetUp
@@ -53,6 +62,12 @@ def sectionsSetUp(test):
     zcml.load_config('permissions.zcml', Products.Five)
     zcml.load_config('meta.zcml', Products.GenericSetup)
     zcml.load_config('configure.zcml', zope.annotation)
+    try:
+        from plone.app.upgrade import v41
+        import AccessControl
+        zcml.load_config('permissions.zcml', AccessControl)
+    except ImportError:
+        pass
     zcml.load_config('configure.zcml', quintagroup.transmogrifier)
 
     from Products.CMFCore import utils
@@ -92,11 +107,20 @@ def siteWalkerSetUp(test):
         contentItems = dict.items
         contentValues = dict.values
 
+
+    class MockURLTool(object):
+
+        def getRelativeContentURL(self, obj):
+            return '/'.join(obj.getPhysicalPath()[2:])
+
     class MockPortal(MockContent, dict):
         implements(IFolderish)
 
         contentItems = dict.items
         contentValues = dict.values
+
+        portal_url = MockURLTool()
+
 
     portal = MockPortal()
 
@@ -114,6 +138,7 @@ def siteWalkerSetUp(test):
     portal['folder1']['folder2'].path = ('', 'plone', 'folder1', 'folder2')
     portal['document3'] = Document()
     portal['document3'].path = ('', 'plone', 'document3')
+
 
 def manifestSetUp(test):
     sectionsSetUp(test)

@@ -68,6 +68,10 @@ class WriterSection(object):
                     contenttype, encoding = mimetypes.guess_type(v['name'])
                 if contenttype is None:
                     contenttype = 'application/octet-stream'
-                self.export_context.writeDataFile(v['name'], v['data'], contenttype, subdir=item_path)
+                if isinstance(v['data'], unicode):
+                    data = v['data'].encode('utf-8')
+                else:
+                    data = v['data']
+                self.export_context.writeDataFile(v['name'], data, contenttype, subdir=item_path)
 
             yield item

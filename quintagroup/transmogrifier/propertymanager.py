@@ -1,8 +1,8 @@
 from zExceptions import BadRequest
 from copy import deepcopy
-from xml.dom import minidom
 
 from zope.interface import classProvides, implements
+from lxml import etree
 
 from collective.transmogrifier.interfaces import ISection, ISectionBlueprint
 from collective.transmogrifier.utils import defaultMatcher
@@ -15,9 +15,9 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
         method uses _convertToBoolean and _getNodeText methods from
         NodeAdapterBase class.
     """
-    
+
     _encoding = 'utf-8'
-    
+
     def __init__(self):
         pass
 
@@ -27,14 +27,14 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
         # them, but these aren't stripped on import. Maybe this method doesn't handle
         # properly multiline string values, but it is needed for importing.
         text = ''
-        for child in node.childNodes:
-            if child.nodeName != '#text':
+        for child in node:
+            if child.tag != '#text':
                 continue
-            text += child.nodeValue.strip()
+            text += child.text.strip()
         return text
 
     def _extractProperties(self):
-        fragment = self._doc.createDocumentFragment()
+        fragment = etree.Element("root")
 
         for prop_map in self.context._propertyMap():
             prop_id = prop_map['id']
@@ -45,17 +45,17 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
             if 'w' not in prop_map.get('mode', 'wd'):
                 continue
 
-            node = self._doc.createElement('property')
-            node.setAttribute('name', prop_id)
+            node = etree.SubElement(fragment, 'property')
+            node.attrib['name'] = prop_id
 
             prop = self.context.getProperty(prop_id)
             if isinstance(prop, (tuple, list)):
                 for value in prop:
                     if isinstance(value, str):
                         value = value.decode(self._encoding)
-                    child = self._doc.createElement('element')
-                    child.appendChild(self._doc.createTextNode(value))
-                    node.appendChild(child)
+                    child = etree.SubElement(node, 'element')
+                    child.text = value
+                    node.append(child)
             else:
                 if prop_map.get('type') == 'boolean':
                     prop = unicode(bool(prop))
@@ -63,38 +63,34 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
                     prop = prop.decode(self._encoding)
                 elif not isinstance(prop, basestring):
                     prop = unicode(prop)
-                child = self._doc.createTextNode(prop)
-                node.appendChild(child)
+                node.text = prop
 
             if 'd' in prop_map.get('mode', 'wd') and not prop_id == 'title':
                 prop_type = prop_map.get('type', 'string')
-                node.setAttribute('type', unicode(prop_type))
+                node.attrib['type'] = unicode(prop_type)
                 select_variable = prop_map.get('select_variable', None)
                 if select_variable is not None:
-                    node.setAttribute('select_variable', select_variable)
+                    node.attrib['select_variable'] = select_variable
 
             if hasattr(self, '_i18n_props') and prop_id in self._i18n_props:
-                node.setAttribute('i18n:translate', '')
+                node.attrib['i18n:translate'] = ''
 
-            fragment.appendChild(node)
+            fragment.append(node)
 
-        return fragment
+        return fragment.iter(tag='property')
 
     def _initProperties(self, node):
         obj = self.context
-        if node.hasAttribute('i18n:domain'):
-            i18n_domain = str(node.getAttribute('i18n:domain'))
+        if 'i18n:domain' in node.attrib:
+            i18n_domain = str(node.attrib['i18n:domain'])
             obj._updateProperty('i18n_domain', i18n_domain)
-        for child in node.childNodes:
-            if child.nodeName != 'property':
-                continue
-            prop_id = str(child.getAttribute('name'))
+        for child in node.iter(tag='property'):
+            prop_id = str(child.attrib['name'])
             prop_map = obj.propdict().get(prop_id, None)
-
             if prop_map is None:
-                if child.hasAttribute('type'):
-                    val = str(child.getAttribute('select_variable'))
-                    prop_type = str(child.getAttribute('type'))
+                if 'type' in child.attrib:
+                    val = str(child.attrib.get('select_variable', ''))
+                    prop_type = str(child.attrib['type'])
                     obj._setProperty(prop_id, val, prop_type)
                     prop_map = obj.propdict().get(prop_id, None)
                 else:
@@ -105,13 +101,13 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
 
             elements = []
             remove_elements = []
-            for sub in child.childNodes:
-                if sub.nodeName == 'element':
-                    if len(sub.childNodes) > 0:
-                        value = sub.childNodes[0].nodeValue.strip()
+            for sub in child:
+                if sub.tag == 'element':
+                    if len(sub) > 0:
+                        value = sub[0].nodeValue.strip()
                         if isinstance(value, unicode):
                             value = value.encode(self._encoding)
-                        if self._convertToBoolean(sub.getAttribute('remove')
+                        if self._convertToBoolean(sub.attrib['remove']
                                                   or 'False'):
                             remove_elements.append(value)
                             if value in elements:
@@ -125,13 +121,14 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
                 prop_value = tuple(elements) or ()
             elif prop_map.get('type') == 'boolean':
                 prop_value = self._convertToBoolean(self._getNodeText(child))
+            elif isinstance(child.text, unicode):
+                prop_value = child.text.encode(self._encoding)
             else:
                 # if we pass a *string* to _updateProperty, all other values
                 # are converted to the right type
-                prop_value = self._getNodeText(child).encode(self._encoding)
+                prop_value = child.text
 
-            if not self._convertToBoolean(child.getAttribute('purge')
-                                          or 'True'):
+            if not self._convertToBoolean(child.attrib.get('purge') or 'True'):
                 # If the purge attribute is False, merge sequences
                 prop = obj.getProperty(prop_id)
                 if isinstance(prop, (tuple, list)):
@@ -158,7 +155,7 @@ class PropertiesExporterSection(object):
                               options.get('exclude', '').splitlines()])
 
         self.helper = Helper()
-        self.doc = minidom.Document()
+        self.doc = etree.Element('properties')
         self.helper._doc = self.doc
 
     def __iter__(self):
@@ -184,16 +181,13 @@ class PropertiesExporterSection(object):
                     excluded_props = tuple(set(item[excludekey]) | set(excluded_props))
 
                 helper.context = obj
-                node = doc.createElement('properties')
-                for elem in helper._extractProperties().childNodes:
-                    if elem.nodeName != 'property':
-                        continue
-                    if elem.getAttribute('name') not in excluded_props:
-                        node.appendChild(deepcopy(elem))
-                if node.hasChildNodes():
-                    doc.appendChild(node)
-                    data = doc.toprettyxml(indent='  ', encoding='utf-8')
-                    doc.unlink()
+                for elem in helper._extractProperties():
+                    if elem.attrib['name'] not in excluded_props:
+                        doc.append(deepcopy(elem))
+                if len(doc):
+                    data = etree.tostring(doc, xml_declaration=True,
+                                          encoding='utf-8', pretty_print=True)
+                    doc.clear()
 
                 if data:
                     item.setdefault(self.fileskey, {})
@@ -247,16 +241,14 @@ class PropertiesImporterSection(object):
                     excluded_props = tuple(set(item[excludekey]) | set(excluded_props))
 
                 data = item[fileskey]['propertymanager']['data']
-                doc = minidom.parseString(data)
-                root = doc.documentElement
-                children = [k for k in root.childNodes]
-                for child in children:
-                    if child.nodeName != 'property':
+                doc = etree.fromstring(data)
+                for child in doc:
+                    if child.tag != 'property':
                         continue
-                    if child.getAttribute('name') in excluded_props:
-                        root.removeChild(child)
+                    if child.attrib['name'] in excluded_props:
+                        doc.remove(child)
 
                 helper.context = obj
-                helper._initProperties(root)
+                helper._initProperties(doc)
 
             yield item

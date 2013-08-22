@@ -114,7 +114,7 @@ class RoundtrippingTests(TransmogrifierTestCase):
             exported.extract(member, path=exported_structure_path)
         pversion = self.getPloneVersion()
         snapshot_structure_path = '%s/reference_export/%s/' % \
-            (self.data_path, '_'.join(map(str, pversion[:3])))
+            (self.data_path, '_'.join(map(str, pversion[:2])))
         comparison = dircmp(snapshot_structure_path, exported_structure_path)
 
         # for the test we check that there are no files that differ

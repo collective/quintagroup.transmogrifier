@@ -7,6 +7,23 @@ Changelog
 - Fixed export of Blobs
   [tom_gross]
 
+- Allow exporting of Plone sites not in ZODB root
+  [tom_gross]
+
+- Port xml.minidom to lxml
+  [tom_gross]
+
+- Plone 4.3 compatibilty
+
+- Apply patch which fixes import of tarballs not available in Plone 4.2
+  [tom_gross]
+
+- Be more failsafe in pathological situations
+  [tom_gross]
+
+- Use regex to similarize xml in tesrs on Python 2.6 and 2.7
+  [tom_gross]
+
 0.4 (21-04-2011)
 ----------------
 

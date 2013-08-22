@@ -65,18 +65,10 @@ and ``type-key`` option that gives key to store item's portal type (default is
  ('_path', '')]
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
-  <record type="Folder">
-    news
-  </record>
-  <record type="Folder">
-    events
-  </record>
-  <record type="Document">
-    front-page
-  </record>
-  <record type="Document">
-    only-in-manifest
-  </record>
+  <record type="Folder">news</record>
+  <record type="Folder">events</record>
+  <record type="Document">front-page</record>
+  <record type="Document">only-in-manifest</record>
 </manifest>
 <BLANKLINE>
 [('_entries', (('aggregator', 'Topic'), ('once-more', 'File'))),
@@ -89,16 +81,17 @@ and ``type-key`` option that gives key to store item's portal type (default is
  ('_type', 'Folder')]
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
-  <record type="Topic">
-    aggregator
-  </record>
-  <record type="File">
-    once-more
-  </record>
+  <record type="Topic">aggregator</record>
+  <record type="File">once-more</record>
 </manifest>
 <BLANKLINE>
-[('_path', 'news/aggregator'), ('_type', 'Topic')]
 [('_path', 'events'), ('_type', 'Folder')]
 [('_path', 'front-page'), ('_type', 'Document')]
 [('_path', 'only-in-manifest'), ('_type', 'Document')]
+[('_path', 'news/aggregator'), ('_type', 'Topic')]
 [('_path', 'news/once-more'), ('_type', 'File')]
+[('_path', 'events')]
+[('_path', 'news'), ('_type', 'Folder')]
+[('_path', 'events'), ('_type', 'Folder')]
+[('_path', 'front-page'), ('_type', 'Document')]
+[('_path', 'only-in-manifest'), ('_type', 'Document')]

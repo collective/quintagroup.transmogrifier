@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+  <record type="Topic">
+    aggregator
+  </record>
+  <record type="News Item">
+    hold-the-press
+  </record>
+</manifest>

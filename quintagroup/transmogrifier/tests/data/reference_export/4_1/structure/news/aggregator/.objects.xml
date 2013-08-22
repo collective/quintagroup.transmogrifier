@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+  <record type="ATPortalTypeCriterion">
+    crit__Type_ATPortalTypeCriterion
+  </record>
+  <record type="ATSimpleStringCriterion">
+    crit__review_state_ATSimpleStringCriterion
+  </record>
+  <record type="ATSortCriterion">
+    crit__effective_ATSortCriterion
+  </record>
+</manifest>

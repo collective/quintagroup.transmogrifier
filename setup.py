@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.4'
+version = '0.5dev1'
 
 setup(name='quintagroup.transmogrifier',
       version=version,
@@ -36,17 +36,17 @@ setup(name='quintagroup.transmogrifier',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'collective.transmogrifier',
+          'collective.transmogrifier<1.5',
+          'lxml',
           'plone.app.transmogrifier',
-          'collective.testcaselayer',
-          'zope.app.container'
+          'zope.container',
       ],
       extras_require = {
         "tests": ["collective.testcaselayer"],
       },
       entry_points="""
       # -*- Entry points: -*-
-      
+
       [z3c.autoinclude.plugin]
       target = plone      
       """,

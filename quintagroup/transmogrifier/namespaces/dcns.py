@@ -17,7 +17,7 @@ class DCAttribute(base.DCAttribute):
         values = self.get(instance)
         if not values:
             return False
-        
+
         for value in values:
             elname = "%s:%s"%(self.namespace.prefix, self.name)
             node = dom.createElementNS(base.DublinCore.xmlns, elname)
@@ -62,15 +62,15 @@ class DCAttribute(base.DCAttribute):
             data[self.name]=value
 
 class DublinCore(base.DublinCore):
-    
+
     attributes = (
         DCAttribute('title', 'Title', 'setTitle',
                     process=(normalizer.space, normalizer.newline)),
-        
+
         DCAttribute('description', 'Description', 'setDescription',
                     process=(normalizer.space,)),
 
-        DCAttribute('subject', 'Subject', 'setSubject', many=True),                
+        DCAttribute('subject', 'Subject', 'setSubject', many=True),
         DCAttribute('contributor', 'Contributors', 'setContributors',
                     many=True),
         # this attr diverges from cmfdefault.dublincore

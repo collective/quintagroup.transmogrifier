@@ -52,19 +52,20 @@ reader section options. Option name is filename and option value is section name
  ('_import_context',
   <Tarball args=(...)>),
  ('_path', 'news')]
-[('_import_context',
-  <Tarball args=(...)>),
- ('_path', 'news/recent')]
 [('_files', [('manifest', [('data', 'some data'), ('name', '.objects.xml')])]),
  ('_import_context',
   <Tarball args=(...)>),
  ('_path', 'pages')]
+[('_import_context',
+  <Tarball args=(...)>),
+ ('_path', 'news/recent')]
 [('_files',
   [('comments', [('data', 'some data'), ('name', '.comments.xml')]),
    ('marshall', [('data', 'some data'), ('name', '.marshall.xml')])]),
  ('_import_context',
   <Tarball args=(...)>),
  ('_path', 'pages/front-page')]
+
 
 Now we test if reader context is properly controlled by ``context`` option.
 

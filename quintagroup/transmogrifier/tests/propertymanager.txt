@@ -65,14 +65,10 @@ these lists are excluded.
       '<?xml...>\n'),
      ('name', '.properties.xml')])]),
  ('_path', 'spam/eggs/foo')]
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <properties>
-  <property name="description">
-    value
-  </property>
-  <property name="author">
-    value
-  </property>
+  <property name="description">value</property>
+  <property name="author">value</property>
 </properties>
 <BLANKLINE>
 >>> pprint.pprint(plone.updated)

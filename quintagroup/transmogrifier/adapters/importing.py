@@ -25,11 +25,11 @@ class ReferenceImporter(object):
         self.transmogrifier = transmogrifier
 
     def __call__(self, data):
-        # uid = self.context.UID()
         uid = self.getUID(data['data'])
         if uid:
             EXISTING_UIDS[uid] = None
-        data['data'] = self.importReferences(data['data'])
+        if data['data']:
+            data['data'] = self.importReferences(data['data'])
         return data
 
     def getUID(self, xml):

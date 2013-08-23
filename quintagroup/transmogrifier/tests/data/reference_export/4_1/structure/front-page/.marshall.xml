@@ -46,9 +46,9 @@ Before you start exploring your newly created Plone site, please do the followin
 
 &lt;ul&gt;
     &lt;li&gt;Find out &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.org/products/plone/features/&quot; target=&quot;_blank&quot;&gt;What's new in Plone&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;Read the &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.org/documentation&quot; target=&quot;_blank&quot;&gt;documentation&lt;/a&gt;, especially the 
-        &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.org/documentation/phc_topic_area?topic=Basic+Use&quot; target=&quot;_blank&quot;&gt;Documentation for content editors&lt;/a&gt; 
-        and 
+    &lt;li&gt;Read the &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.org/documentation&quot; target=&quot;_blank&quot;&gt;documentation&lt;/a&gt;, especially the
+        &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.org/documentation/phc_topic_area?topic=Basic+Use&quot; target=&quot;_blank&quot;&gt;Documentation for content editors&lt;/a&gt;
+        and
         &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.org/documentation/faq/server-recommendations&quot; target=&quot;_blank&quot;&gt;Server setup recommendations&lt;/a&gt;.
     &lt;/li&gt;
     &lt;li&gt;Explore the &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.org/products&quot; target=&quot;_blank&quot;&gt;available add-ons&lt;/a&gt; for Plone.&lt;/li&gt;
@@ -61,10 +61,10 @@ Before you start exploring your newly created Plone site, please do the followin
 
 &lt;ul&gt;
     &lt;li&gt;
-    Try out a different theme, either pick from 
-    &lt;a href=&quot;@@skins-controlpanel&quot;&gt;the included ones&lt;/a&gt;, or one of the 
-    &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.org/products/by-category/themes&quot; target=&quot;_blank&quot;&gt;available themes 
-       from plone.org&lt;/a&gt;. &lt;span class=&quot;discreet&quot;&gt;(Make sure the theme is 
+    Try out a different theme, either pick from
+    &lt;a href=&quot;@@skins-controlpanel&quot;&gt;the included ones&lt;/a&gt;, or one of the
+    &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.org/products/by-category/themes&quot; target=&quot;_blank&quot;&gt;available themes
+       from plone.org&lt;/a&gt;. &lt;span class=&quot;discreet&quot;&gt;(Make sure the theme is
        compatible with the version of Plone you are currently using)&lt;/span&gt;
     &lt;/li&gt;
 
@@ -72,28 +72,28 @@ Before you start exploring your newly created Plone site, please do the followin
     &lt;a href=&quot;@@types-controlpanel&quot;&gt;
     Decide what kind of workflow you want in your site.&lt;/a&gt;
     &lt;span class=&quot;discreet&quot;&gt;(The default is a
-    website-centric workflow, if you want to use Plone as a closed intranet, 
+    website-centric workflow, if you want to use Plone as a closed intranet,
     you should adjust your workflow settings accordingly)&lt;/span&gt;
     &lt;/li&gt;
 
     &lt;li&gt;
-    By default, Plone uses a visual editor for content. 
-    &lt;span class=&quot;discreet&quot;&gt;(If you prefer text-based syntax and/or wiki 
+    By default, Plone uses a visual editor for content.
+    &lt;span class=&quot;discreet&quot;&gt;(If you prefer text-based syntax and/or wiki
         syntax, you can change this in the
     &lt;a href=&quot;@@markup-controlpanel&quot;&gt;markup control panel&lt;/a&gt;)&lt;/span&gt;
     &lt;/li&gt;
 
-    &lt;li&gt;&amp;hellip;and many more settings are available in the 
+    &lt;li&gt;…and many more settings are available in the
         &lt;a href=&quot;plone_control_panel&quot;&gt;Site Setup&lt;/a&gt;.
     &lt;/li&gt;
-    
+
 &lt;/ul&gt;
 
 &lt;h2&gt;Tell us how you use it&lt;/h2&gt;
 
 &lt;p&gt;
-Are you doing something interesting with Plone? Big site deployments, 
-interesting use cases? Do you have a company that delivers Plone-based 
+Are you doing something interesting with Plone? Big site deployments,
+interesting use cases? Do you have a company that delivers Plone-based
 solutions?
 &lt;/p&gt;
 
@@ -102,7 +102,7 @@ solutions?
         &lt;span class=&quot;discreet&quot;&gt;(Or see what sites are already out there!)&lt;/span&gt;
     &lt;/li&gt;
     &lt;li&gt;Add your company as a &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.net/providers&quot; target=&quot;_blank&quot;&gt;Plone provider&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;Add a &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.net/case-studies&quot; target=&quot;_blank&quot;&gt;case study&lt;/a&gt; describing your 
+    &lt;li&gt;Add a &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.net/case-studies&quot; target=&quot;_blank&quot;&gt;case study&lt;/a&gt; describing your
         deployed project and customer.&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -114,30 +114,30 @@ language. More about these technologies:
 &lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;The &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.org&quot; target=&quot;_blank&quot;&gt;Plone open source 
+&lt;li&gt;The &lt;a class=&quot;link-plain&quot; href=&quot;http://plone.org&quot; target=&quot;_blank&quot;&gt;Plone open source
     Content Management System&lt;/a&gt; web site.&lt;/li&gt;
-&lt;li&gt;The &lt;a class=&quot;link-plain&quot; href=&quot;http://zope2.zope.org&quot; target=&quot;_blank&quot;&gt;Zope 
+&lt;li&gt;The &lt;a class=&quot;link-plain&quot; href=&quot;http://zope2.zope.org&quot; target=&quot;_blank&quot;&gt;Zope
     application server&lt;/a&gt; web site.&lt;/li&gt;
-&lt;li&gt;The &lt;a class=&quot;link-plain&quot; href=&quot;http://www.python.org&quot; target=&quot;_blank&quot;&gt;Python 
+&lt;li&gt;The &lt;a class=&quot;link-plain&quot; href=&quot;http://www.python.org&quot; target=&quot;_blank&quot;&gt;Python
     programming language&lt;/a&gt; web site.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2&gt;Donate to the Plone Foundation&lt;/h2&gt;
 
 &lt;p&gt;
-Plone is made possible only through the efforts of thousands of dedicated 
+Plone is made possible only through the efforts of thousands of dedicated
 individuals and hundreds of companies. The Plone Foundation:
 &lt;/p&gt;
 &lt;ul&gt;
-    &lt;li&gt;&amp;hellip;protects and promotes Plone.&lt;/li&gt;
-    &lt;li&gt;&amp;hellip;is a registered 501(c)(3) charitable organization.&lt;/li&gt;
-    &lt;li&gt;&amp;hellip;donations are tax-deductible.&lt;/li&gt;
+    &lt;li&gt;…protects and promotes Plone.&lt;/li&gt;
+    &lt;li&gt;…is a registered 501(c)(3) charitable organization.&lt;/li&gt;
+    &lt;li&gt;…donations are tax-deductible.&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;http://plone.org/foundation/foundation-donations&quot;&gt;Show your support!&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Thanks for using our product, we hope you like it!&lt;/p&gt;
 
-&lt;p&gt;&amp;mdash;The Plone Team&lt;/p&gt;
+&lt;p&gt;—The Plone Team&lt;/p&gt;
 	</field>
 	<field mimetype="text/plain" name="presentation">
 		True
@@ -149,6 +149,6 @@ individuals and hundreds of companies. The Plone Foundation:
 		Document
 	</cmf:type>
 	<cmf:security>
-		<cmf:local_role role="Owner" user_id="portal_owner"/>
+		<cmf:security role="Owner" user_id="portal_owner"/>
 	</cmf:security>
 </metadata>

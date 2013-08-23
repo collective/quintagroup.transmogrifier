@@ -24,6 +24,6 @@
 		Folder
 	</cmf:type>
 	<cmf:security>
-		<cmf:local_role role="Owner" user_id="test_user_1_"/>
+		<cmf:security role="Owner" user_id="test_user_1_"/>
 	</cmf:security>
 </metadata>

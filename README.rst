@@ -1,6 +1,8 @@
 Export/import transmogrifier blueprints
 =======================================
 
+.. image:: https://travis-ci.org/collective/quintagroup.transmogrifier.png
+
 This package contains blueprints for collective.transmogrifier
 pipelines, that may be used to export/import Plone site content.
 It also overrides GenericSetup ``Content`` step so this package

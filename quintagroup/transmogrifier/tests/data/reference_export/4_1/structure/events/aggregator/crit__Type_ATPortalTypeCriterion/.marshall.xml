@@ -26,9 +26,6 @@
 	<field mimetype="text/plain" name="value">
 		Event
 	</field>
-	<field mimetype="text/plain" name="operator">
-		or
-	</field>
 	<uid>
 		
 	</uid>
@@ -36,6 +33,6 @@
 		ATPortalTypeCriterion
 	</cmf:type>
 	<cmf:security>
-		<cmf:local_role role="Owner" user_id="portal_owner"/>
+		<cmf:security role="Owner" user_id="portal_owner"/>
 	</cmf:security>
 </metadata>

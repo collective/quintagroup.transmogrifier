@@ -22,13 +22,21 @@
     <property name="count">
       5
     </property>
-    <property name="state"/>
+    <property name="state">
+      <element>
+        published
+      </element>
+    </property>
   </assignment>
   <assignment category="context" key="/plone" manager="plone.rightcolumn" name="events" type="portlets.Events">
     <property name="count">
       5
     </property>
-    <property name="state"/>
+    <property name="state">
+      <element>
+        published
+      </element>
+    </property>
   </assignment>
   <blacklist category="user" manager="plone.dashboard2" status="acquire"/>
   <blacklist category="group" manager="plone.dashboard2" status="acquire"/>

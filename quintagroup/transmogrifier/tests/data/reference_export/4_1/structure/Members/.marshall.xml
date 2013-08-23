@@ -3,7 +3,7 @@
 		Users
 	</dc:title>
 	<dc:description>
-		Container for users' home directories
+		Site Users
 	</dc:description>
 	<dc:creator>
 		portal_owner
@@ -27,6 +27,6 @@
 		Folder
 	</cmf:type>
 	<cmf:security>
-		<cmf:local_role role="Owner" user_id="portal_owner"/>
+		<cmf:security role="Owner" user_id="portal_owner"/>
 	</cmf:security>
 </metadata>

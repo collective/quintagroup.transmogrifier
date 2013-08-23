@@ -12,7 +12,4 @@
   <record type="ATDateCriteria">
     crit__start_ATFriendlyDateCriteria
   </record>
-  <record type="Topic">
-    previous
-  </record>
 </manifest>

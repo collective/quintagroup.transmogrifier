@@ -36,6 +36,6 @@
 		ATDateCriteria
 	</cmf:type>
 	<cmf:security>
-		<cmf:local_role role="Owner" user_id="portal_owner"/>
+		<cmf:security role="Owner" user_id="portal_owner"/>
 	</cmf:security>
 </metadata>

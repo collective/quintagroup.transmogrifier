@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.5dev1'
+version = '0.5'
 
 setup(name='quintagroup.transmogrifier',
       version=version,

@@ -30,4 +30,5 @@ Design and development
     - Maurits Van Rees
     - Laurence Rowe
     - Mikko Ohtamaa
+    - Tom Gross
 

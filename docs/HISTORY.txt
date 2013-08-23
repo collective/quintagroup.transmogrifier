@@ -80,28 +80,28 @@ Changelog
 0.3 (2010-09-07)
 ----------------
 
- - Plone4 compatibility [tomster, csenger]
+- Plone4 compatibility [tomster, csenger]
 
- - updated tests for Plone4 and Plone3 [fenix, liebster]
+- updated tests for Plone4 and Plone3 [fenix, liebster]
 
- - added sections for export/import of portlet assignments [koval]
+- added sections for export/import of portlet assignments [koval]
 
 0.2 (2010-01-04)
 ----------------
 
- - the "quintagroup.transmogrifier" namespace removed [koval]
+- the "quintagroup.transmogrifier" namespace removed [koval]
 
- - added interface import/export steps [mylan]
+- added interface import/export steps [mylan]
 
- - merged plone21 branch [piv]
+- merged plone21 branch [piv]
 
- - various fixes [piv, mylan, koval]
+- various fixes [piv, mylan, koval]
 
- - history update, release [chervol]
+- history update, release [chervol]
 
 
 0.1 (2009-11-19)
 ----------------
 
- - Initial release
+- Initial release
 

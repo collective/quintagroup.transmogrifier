@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.5dev1'
+version = '0.5'
 
 setup(name='quintagroup.transmogrifier',
       version=version,
@@ -13,9 +13,10 @@ setup(name='quintagroup.transmogrifier',
         "Framework :: Zope2",
         "Framework :: Zope3",
         "Framework :: Plone",
-#        "Framework :: Plone :: 4.0",
-#        "Framework :: Plone :: 4.1",
-#        "Framework :: Plone :: 4.2",
+        "Framework :: Plone :: 4.0",
+        "Framework :: Plone :: 4.1",
+        "Framework :: Plone :: 4.2",
+        "Framework :: Plone :: 4.3",
         "Programming Language :: Python",
         "Intended Audience :: Developers",
         "Natural Language :: English",

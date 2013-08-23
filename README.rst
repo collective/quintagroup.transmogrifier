@@ -1,7 +1,7 @@
 Export/import transmogrifier blueprints
 =======================================
 
-https://travis-ci.org/collective/quintagroup.transmogrifier.png
+.. image:: https://travis-ci.org/collective/quintagroup.transmogrifier.png
 
 This package contains blueprints for collective.transmogrifier
 pipelines, that may be used to export/import Plone site content.

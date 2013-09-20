@@ -41,9 +41,11 @@ setup(name='quintagroup.transmogrifier',
           'lxml',
           'plone.app.transmogrifier',
           'zope.container',
+          'Products.Marshall',
       ],
       extras_require = {
-        "tests": ["collective.testcaselayer"],
+        "tests": ["collective.testcaselayer",
+                  "Products.PloneTestCase"],
       },
       entry_points="""
       # -*- Entry points: -*-

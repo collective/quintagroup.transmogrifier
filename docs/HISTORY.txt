@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6 (unreleased)
+----------------
+
+- Clean unicode data in local roles and workflow history
+  [tom_gross]
+
 0.5 (23-08-2013)
 ----------------
 
@@ -21,7 +27,7 @@ Changelog
 - Be more failsafe in pathological situations
   [tom_gross]
 
-- Use regex to similarize xml in tesrs on Python 2.6 and 2.7
+- Use regex to similarize xml in tests on Python 2.6 and 2.7
   [tom_gross]
 
 0.4 (21-04-2011)

@@ -56,7 +56,12 @@ class CatalogSourceSection(object):
             for p in v.split(';'):
                 params = p.split('=', 1)
                 if len(params) == 1:
-                    self.query[k] = p.strip()
+                    if not self.query.get(k):
+                        self.query[k] = p.strip()
+                    else:
+                        if not isinstance(self.query[k], list):
+                            self.query[k] = [self.query[k]]
+                        self.query[k].append(p.strip())
                 else :
                     q = self.query.setdefault(k, {})
                     q[params[0].strip()] = params[1].strip()

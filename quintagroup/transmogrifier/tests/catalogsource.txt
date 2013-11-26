@@ -27,6 +27,12 @@ manually initialize section with that query).
 {'Type': 'Document',
  'modified': {'query': '2008/11/02 12:00:00 GMT+0', 'range': 'min'}}
 
+>>> options = {'Type': 'Document; Folder',
+...            'blueprint': 'quintagroup.transmogrifier.catalogsource'}
+>>> section = CatalogSourceSection(transmogrifier, 'catalogsource', options, object())
+>>> pprint(section.query)
+{'Type': ['Document', 'Folder']}
+
 Now test functionality of this section.
 
 >>> catalogsource = """

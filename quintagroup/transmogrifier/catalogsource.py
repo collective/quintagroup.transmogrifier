@@ -62,7 +62,7 @@ class CatalogSourceSection(object):
                         if not isinstance(self.query[k], list):
                             self.query[k] = [self.query[k]]
                         self.query[k].append(p.strip())
-                else :
+                else:
                     q = self.query.setdefault(k, {})
                     q[params[0].strip()] = params[1].strip()
 

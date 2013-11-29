@@ -6,6 +6,7 @@ import transaction
 
 from Products.Archetypes.interfaces import IBaseUnit
 from Products.Archetypes.interfaces import IObjectField
+from Products.Archetypes.interfaces import ISchema
 
 from Products.Marshall import config
 from Products.Marshall.namespaces import atns as base
@@ -14,7 +15,6 @@ from quintagroup.transmogrifier.namespaces.util import has_ctrlchars
 
 
 class ATAttribute(base.ATAttribute):
-
 
     def serialize(self, dom, parent_node, instance, options={}):
 
@@ -64,7 +64,8 @@ class ATAttribute(base.ATAttribute):
                 value_node = dom.createTextNode(value)
                 node.appendChild(value_node)
 
-            field = instance.schema._fields[self.name]
+            schema = ISchema(instance)
+            field = schema._fields[self.name]
             if IObjectField.providedBy(field):
                 mime_attr = dom.createAttribute('mimetype')
                 mime_attr.value = field.getContentType(instance)

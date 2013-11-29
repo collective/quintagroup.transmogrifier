@@ -7,6 +7,9 @@ Changelog
 - Clean unicode data in local roles and workflow history
   [tom_gross]
 
+- Respect fields added by schemaextender
+  [tom_gross]
+
 0.5 (23-08-2013)
 ----------------
 

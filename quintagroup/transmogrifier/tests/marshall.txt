@@ -42,20 +42,27 @@ excluded.
 ... blueprint = quintagroup.transmogrifier.demarshaller
 ... 
 ... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
+... blueprint = collective.transmogrifier.sections.logger
+... level = INFO
+... name = Infologger
 ... """
+>>> import logging, sys
+>>> logger = logging.getLogger()
+>>> handler = logging.StreamHandler(sys.stdout)
+>>> handler.setFormatter(logging.Formatter('%(message)s'))
+>>> logger.addHandler(handler)
 >>> registerConfig(u'quintagroup.transmogrifier.tests.marshall', marshall)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.marshall') # doctest: +REPORT_NDIFF
-[]
-[('_excluded_fields', ('file', 'image')),
- ('_files',
-  [('marshall', [('data', 'marshalled'), ('name', '.marshall.xml')])]),
- ('_path', 'spam/eggs/foo')]
-[('_files', [('marshall', [('data', None), ('name', '.marshall.xml')])]),
- ('_path', 'topic/criterion')]
-[('_path', 'not/existing/bar')]
-[('_files', [('marshall', [('data', 'xml'), ('name', '.marshall.xml')])]),
- ('_path', 'spam/eggs/notatcontent')]
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.marshall') # doctest: +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{}
+{'_excluded_fields': ('file', 'image'),
+ '_files':
+    {'marshall': {'data': 'marshalled', 'name': '.marshall.xml'}},
+ '_path': 'spam/eggs/foo'}
+{'_files': {'marshall': {'data': None, 'name': '.marshall.xml'}},
+ '_path': 'topic/criterion'}
+{'_path': 'not/existing/bar'}
+{'_files': {'marshall': {'data': 'xml', 'name': '.marshall.xml'}},
+ '_path': 'spam/eggs/notatcontent'}
 
 >>> pprint.pprint(plone.marshalled)
 (('spam/eggs/foo', ('text', 'image', 'file')), ('topic/criterion', ('text',)))

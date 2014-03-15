@@ -46,15 +46,22 @@ Now test functionality of this section.
 ... modified = query = 2008-11-02T12:00:00Z; range = min
 ... 
 ... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
+... blueprint = collective.transmogrifier.sections.logger
+... level = INFO
+... name = Infologger
 ... """
+>>> import logging, sys
+>>> logger = logging.getLogger()
+>>> handler = logging.StreamHandler(sys.stdout)
+>>> handler.setFormatter(logging.Formatter('%(message)s'))
+>>> logger.addHandler(handler)
 >>> registerConfig(u'quintagroup.transmogrifier.tests.catalogsource',
 ...                catalogsource)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.catalogsource') #doctest: +REPORT_NDIFF
-[('_entries', (('folder2', 'Folder'), ('folder1', 'Folder'))), ('_path', '')]
-[('_entries', (('document2', 'Document'), ('document3', 'Document'))),
- ('_path', 'folder1')]
-[('_path', 'folder1/document2')]
-[('_path', 'folder1/document3')]
-[('_entries', (('document4', 'Document'),)), ('_path', 'folder2')]
-[('_path', 'folder2/document4')]
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.catalogsource') #doctest: +REPORT_NDIFF +NORMALIZE_WHITESPACE
+{'_entries': (('folder2', 'Folder'), ('folder1', 'Folder')), '_path': ''}
+{'_entries': (('document2', 'Document'), ('document3', 'Document')),
+ '_path': 'folder1'}
+{'_path': 'folder1/document2'}
+{'_path': 'folder1/document3'}
+{'_entries': (('document4', 'Document'),), '_path': 'folder2'}
+{'_path': 'folder2/document4'}

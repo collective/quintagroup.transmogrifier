@@ -26,8 +26,13 @@ export contexts. The writer section blueprint name is
 ...     _export_context
 ...     _wrote
 ... """
+>>> import logging, sys
+>>> logger = logging.getLogger()
+>>> handler = logging.StreamHandler(sys.stdout)
+>>> handler.setFormatter(logging.Formatter('%(message)s'))
+>>> logger.addHandler(handler)
 >>> registerConfig(u'quintagroup.transmogrifier.tests.writer', writer)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.writer') # doctest: +ELLIPSIS, +REPORT_NDIFF
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.writer') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
 []
 []
 [('structure/spam/eggs/foo/.second.xml', 'other data', 'application/xml'),
@@ -52,14 +57,21 @@ Now we test if writer context is properly controlled by ``context`` option.
 ... blueprint = quintagroup.transmogrifier.writer
 ... 
 ... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
+... blueprint = collective.transmogrifier.sections.logger
+... level = INFO
+... name = Infologger
 ... """
+>>> import logging, sys
+>>> logger = logging.getLogger()
+>>> handler = logging.StreamHandler(sys.stdout)
+>>> handler.setFormatter(logging.Formatter('%(message)s'))
+>>> logger.addHandler(handler)
 >>> registerConfig(u'quintagroup.transmogrifier.tests.writerdefault', writerdefault)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdefault') # doctest: +ELLIPSIS, +REPORT_NDIFF
-[('_export_context',
-  <Tarball args=(...) _wrote=[]>),
- ('_files', []),
- ('_path', '')]
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdefault') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{'_export_context':
+  <Tarball args=(...) _wrote=[]>,
+ '_files': {},
+ '_path': ''}
 
 >>> writerdir = """
 ... [transmogrifier]
@@ -70,11 +82,11 @@ Now we test if writer context is properly controlled by ``context`` option.
 ... path = content
 ... """
 >>> registerConfig(u'quintagroup.transmogrifier.tests.writerdir', writerdir)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdir') # doctest: +ELLIPSIS, +REPORT_NDIFF
-[('_export_context',
-  <Directory args=(..., 'content') _wrote=[]>),
- ('_files', []),
- ('_path', '')]
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdir') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{'_export_context':
+  <Directory args=(..., 'content') _wrote=[]>,
+ '_files': {},
+ '_path': ''}
 
 >>> writertar = """
 ... [transmogrifier]
@@ -84,11 +96,11 @@ Now we test if writer context is properly controlled by ``context`` option.
 ... context = tarball
 ... """
 >>> registerConfig(u'quintagroup.transmogrifier.tests.writertar', writertar)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.writertar') # doctest: +ELLIPSIS, +REPORT_NDIFF
-[('_export_context',
-  <Tarball args=(...) _wrote=[]>),
- ('_files', []),
- ('_path', '')]
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.writertar') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{'_export_context':
+  <Tarball args=(...) _wrote=[]>,
+ '_files': {},
+ '_path': ''}
 
 >>> writerdb = """
 ... [transmogrifier]
@@ -98,8 +110,8 @@ Now we test if writer context is properly controlled by ``context`` option.
 ... context = snapshot
 ... """
 >>> registerConfig(u'quintagroup.transmogrifier.tests.writerdb', writerdb)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdb') # doctest: +ELLIPSIS, +REPORT_NDIFF
-[('_export_context',
-  <Snapshot args=(...) _wrote=[]>),
- ('_files', []),
- ('_path', '')]
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.writerdb') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{'_export_context':
+  <Snapshot args=(...) _wrote=[]>,
+ '_files': {},
+ '_path': ''}

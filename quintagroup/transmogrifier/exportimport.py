@@ -105,6 +105,7 @@ def importSiteStructure(context):
     if config_name is None:
         transmogrifier._raw = _load_config(IMPORT_CONFIG)
     else:
+        transmogrifier.configuration_id = config_name
         transmogrifier._raw = _load_config(config_name)
         global CONFIGFILE
         CONFIGFILE = None

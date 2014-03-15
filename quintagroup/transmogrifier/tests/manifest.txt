@@ -40,7 +40,9 @@ and ``type-key`` option that gives key to store item's portal type (default is
 ... enable-source-behaviour = true
 ...
 ... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
+... blueprint = collective.transmogrifier.sections.logger
+... level = INFO
+... name = Infologger
 ... 
 ... [dataprinter]
 ... blueprint = quintagroup.transmogrifier.tests.dataprinter
@@ -49,20 +51,25 @@ and ``type-key`` option that gives key to store item's portal type (default is
 ...     manifest
 ...     data
 ... """
+>>> import logging, sys
+>>> logger = logging.getLogger()
+>>> handler = logging.StreamHandler(sys.stdout)
+>>> handler.setFormatter(logging.Formatter('%(message)s'))
+>>> logger.addHandler(handler)
 >>> registerConfig(u'quintagroup.transmogrifier.tests.manifest',
 ...                manifest)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.manifest') # doctest: +ELLIPSIS, +REPORT_NDIFF
-[('_entries',
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.manifest') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{'_entries':
   (('news', 'Folder'),
    ('events', 'Folder'),
    ('front-page', 'Document'),
-   ('only-in-manifest', 'Document'))),
- ('_files',
-  [('manifest',
-    [('data',
-      '<?xml...>\n'),
-     ('name', '.objects.xml')])]),
- ('_path', '')]
+   ('only-in-manifest', 'Document')),
+ '_files':
+  {'manifest':
+    {'data':
+      '<?xml...>\n',
+     'name': '.objects.xml'}},
+ '_path': ''}
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
   <record type="Folder">news</record>
@@ -71,27 +78,27 @@ and ``type-key`` option that gives key to store item's portal type (default is
   <record type="Document">only-in-manifest</record>
 </manifest>
 <BLANKLINE>
-[('_entries', (('aggregator', 'Topic'), ('once-more', 'File'))),
- ('_files',
-  [('manifest',
-    [('data',
-      '<?xml...>\n'),
-     ('name', '.objects.xml')])]),
- ('_path', 'news'),
- ('_type', 'Folder')]
+{'_entries': (('aggregator', 'Topic'), ('once-more', 'File')),
+ '_files':
+  {'manifest':
+    {'data':
+      '<?xml...>\n',
+     'name': '.objects.xml'}},
+ '_path': 'news',
+ '_type': 'Folder'}
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
   <record type="Topic">aggregator</record>
   <record type="File">once-more</record>
 </manifest>
 <BLANKLINE>
-[('_path', 'events'), ('_type', 'Folder')]
-[('_path', 'front-page'), ('_type', 'Document')]
-[('_path', 'only-in-manifest'), ('_type', 'Document')]
-[('_path', 'news/aggregator'), ('_type', 'Topic')]
-[('_path', 'news/once-more'), ('_type', 'File')]
-[('_path', 'events')]
-[('_path', 'news'), ('_type', 'Folder')]
-[('_path', 'events'), ('_type', 'Folder')]
-[('_path', 'front-page'), ('_type', 'Document')]
-[('_path', 'only-in-manifest'), ('_type', 'Document')]
+{'_path': 'events', '_type': 'Folder'}
+{'_path': 'front-page', '_type': 'Document'}
+{'_path': 'only-in-manifest', '_type': 'Document'}
+{'_path': 'news/aggregator', '_type': 'Topic'}
+{'_path': 'news/once-more', '_type': 'File'}
+{'_path': 'events'}
+{'_path': 'news', '_type': 'Folder'}
+{'_path': 'events', '_type': 'Folder'}
+{'_path': 'front-page', '_type': 'Document'}
+{'_path': 'only-in-manifest', '_type': 'Document'}

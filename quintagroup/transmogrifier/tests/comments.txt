@@ -30,7 +30,9 @@ key where XML data will be or is stored.
 ... blueprint = quintagroup.transmogrifier.commentsexporter
 ... 
 ... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
+... blueprint = collective.transmogrifier.sections.logger
+... level = INFO
+... name = Infologger
 ... 
 ... [dataprinter]
 ... blueprint = quintagroup.transmogrifier.tests.dataprinter
@@ -42,17 +44,22 @@ key where XML data will be or is stored.
 ... [commentsimporter]
 ... blueprint = quintagroup.transmogrifier.commentsimporter
 ... """
+>>> import logging, sys
+>>> logger = logging.getLogger()
+>>> handler = logging.StreamHandler(sys.stdout)
+>>> handler.setFormatter(logging.Formatter('%(message)s'))
+>>> logger.addHandler(handler)
 >>> registerConfig(u'quintagroup.transmogrifier.tests.comments', comments)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.comments') # doctest: +ELLIPSIS, +REPORT_NDIFF
-[]
-[('_path', 'not/existing/bar')]
-[('_path', 'spam/eggs/notdiscussable')]
-[('_files',
-  [('comments',
-    [('data',
-      '<?xml...>\n'),
-     ('name', '.comments.xml')])]),
- ('_path', 'spam/eggs/foo')]
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.comments') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{}
+{'_path': 'not/existing/bar'}
+{'_path': 'spam/eggs/notdiscussable'}
+{'_files':
+  {'comments':
+    {'data':
+      '<?xml...>\n',
+     'name': '.comments.xml'}},
+ '_path': 'spam/eggs/foo'}
 <?xml version="1.0" encoding="utf-8"?>
 <discussion>
   <item id="1">

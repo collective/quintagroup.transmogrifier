@@ -38,33 +38,40 @@ reader section options. Option name is filename and option value is section name
 ... .comments.xml = comments
 ... 
 ... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
+... blueprint = collective.transmogrifier.sections.logger
+... level = INFO
+... name = Infologger
 ... """
+>>> import logging, sys
+>>> logger = logging.getLogger()
+>>> handler = logging.StreamHandler(sys.stdout)
+>>> handler.setFormatter(logging.Formatter('%(message)s'))
+>>> logger.addHandler(handler)
 >>> registerConfig(u'quintagroup.transmogrifier.tests.reader', reader)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.reader') # doctest: +ELLIPSIS, +REPORT_NDIFF
-[('_files',
-  [('other.file', [('data', 'some data'), ('name', 'other.file')]),
-   ('propertymanager', [('data', 'some data'), ('name', '.properties.xml')])]),
- ('_import_context',
-  <Tarball args=(...)>),
- ('_path', '')]
-[('_files', [('manifest', [('data', 'some data'), ('name', '.objects.xml')])]),
- ('_import_context',
-  <Tarball args=(...)>),
- ('_path', 'news')]
-[('_files', [('manifest', [('data', 'some data'), ('name', '.objects.xml')])]),
- ('_import_context',
-  <Tarball args=(...)>),
- ('_path', 'pages')]
-[('_import_context',
-  <Tarball args=(...)>),
- ('_path', 'news/recent')]
-[('_files',
-  [('comments', [('data', 'some data'), ('name', '.comments.xml')]),
-   ('marshall', [('data', 'some data'), ('name', '.marshall.xml')])]),
- ('_import_context',
-  <Tarball args=(...)>),
- ('_path', 'pages/front-page')]
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.reader') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{'_files':
+  {'other.file': {'data': 'some data', 'name': 'other.file'},
+   'propertymanager': {'data': 'some data', 'name': '.properties.xml'}},
+ '_import_context':
+  <Tarball args=(...)>,
+ '_path': ''}
+{'_files': {'manifest': {'data': 'some data', 'name': '.objects.xml'}},
+ '_import_context':
+  <Tarball args=(...)>,
+ '_path': 'news'}
+{'_files': {'manifest': {'data': 'some data', 'name': '.objects.xml'}},
+ '_import_context':
+  <Tarball args=(...)>,
+ '_path': 'pages'}
+{'_import_context':
+  <Tarball args=(...)>,
+ '_path': 'news/recent'}
+{'_files':
+  {'comments': {'data': 'some data', 'name': '.comments.xml'},
+   'marshall': {'data': 'some data', 'name': '.marshall.xml'}},
+ '_import_context':
+  <Tarball args=(...)>,
+ '_path': 'pages/front-page'}
 
 
 Now we test if reader context is properly controlled by ``context`` option.
@@ -81,13 +88,15 @@ Now we test if reader context is properly controlled by ``context`` option.
 ... path = /path/to/directory
 ... 
 ... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
+... blueprint = collective.transmogrifier.sections.logger
+... level = INFO
+... name = Infologger
 ... """
 >>> registerConfig(u'quintagroup.transmogrifier.tests.dirreader', dirreader)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.dirreader') # doctest: +ELLIPSIS, +REPORT_NDIFF
-[('_import_context',
-  <Directory args=(..., '/path/to/directory')>),
- ('_path', '')]
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.dirreader') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{'_import_context':
+  <Directory args=(..., '/path/to/directory')>,
+ '_path': ''}
 
 >>> dbreader = """
 ... [transmogrifier]
@@ -101,10 +110,12 @@ Now we test if reader context is properly controlled by ``context`` option.
 ... path = snapshot-20081008163000
 ... 
 ... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
+... blueprint = collective.transmogrifier.sections.logger
+... level = INFO
+... name = Infologger
 ... """
 >>> registerConfig(u'quintagroup.transmogrifier.tests.dbreader', dbreader)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.dbreader') # doctest: +ELLIPSIS, +REPORT_NDIFF
-[('_import_context',
-  <Snapshot args=(..., 'snapshot-...')>),
- ('_path', '')]
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.dbreader') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{'_import_context':
+  <Snapshot args=(..., 'snapshot-...')>,
+ '_path': ''}

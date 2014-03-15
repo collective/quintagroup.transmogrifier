@@ -32,7 +32,9 @@ key where XML data will be or is stored.
 ... blueprint = quintagroup.transmogrifier.portletsexporter
 ... 
 ... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
+... blueprint = collective.transmogrifier.sections.logger
+... level = INFO
+... name = Infologger
 ... 
 ... [dataprinter]
 ... blueprint = quintagroup.transmogrifier.tests.dataprinter
@@ -45,17 +47,22 @@ key where XML data will be or is stored.
 ... blueprint = quintagroup.transmogrifier.portletsimporter
 ... files-key = files
 ... """
+>>> import logging, sys
+>>> logger = logging.getLogger()
+>>> handler = logging.StreamHandler(sys.stdout)
+>>> handler.setFormatter(logging.Formatter('%(message)s'))
+>>> logger.addHandler(handler)
 >>> registerConfig(u'quintagroup.transmogrifier.tests.portlets', portlets)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.portlets') # doctest: +ELLIPSIS, +REPORT_NDIFF
-[]
-[('_path', 'not/existing/bar')]
-[('_path', 'spam/eggs/notassignable')]
-[('_files',
-  [('portlets',
-    [('data',
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.portlets') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{}
+{'_path': 'not/existing/bar'}
+{'_path': 'spam/eggs/notassignable'}
+{'_files':
+  {'portlets':
+    {'data':
 ...
-     ('name', '.portlets.xml')])]),
- ('_path', 'assignable')]
+     'name': '.portlets.xml'}},
+ '_path': 'assignable'}
 <?xml version="1.0" encoding="utf-8"?>
 <portlets>
   <assignment category="context" key="/assignable" manager="plone.leftcolumn" name="rss" type="portlets.rss">
@@ -70,17 +77,17 @@ key where XML data will be or is stored.
   <blacklist category="context" manager="plone.leftcolumn" status="acquire"/>
 </portlets>
 <BLANKLINE>
-[('_files',
-  [('portlets',
-    [('data',
+{'_files':
+  {'portlets':
+    {'data':
 ...
-     ('name', '.portlets.xml')])]),
- ('_path', 'other-assignable'),
- ('files',
-  [('portlets',
-    [('data',
+     'name': '.portlets.xml'}},
+ '_path': 'other-assignable',
+ 'files':
+  {'portlets':
+    {'data':
 ...
-     ('name', '.portlets.xml')])])]
+     'name': '.portlets.xml'}}}
 <?xml version="1.0" encoding="utf-8"?>
 <portlets>
   <assignment category="context" key="/other-assignable" manager="plone.leftcolumn" name="rss" type="portlets.rss">
@@ -141,7 +148,9 @@ and not purge existent portlets. To force purging - it must be set to ``True``.
 ... blueprint = quintagroup.transmogrifier.portletsexporter
 ... 
 ... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
+... blueprint = collective.transmogrifier.sections.logger
+... level = INFO
+... name = Infologger
 ... 
 ... [dataprinter]
 ... blueprint = quintagroup.transmogrifier.tests.dataprinter
@@ -156,19 +165,19 @@ and not purge existent portlets. To force purging - it must be set to ``True``.
 ... purge = True
 ... """
 >>> registerConfig(u'quintagroup.transmogrifier.tests.portlets2', portlets2)
->>> transmogrifier(u'quintagroup.transmogrifier.tests.portlets2') # doctest: +ELLIPSIS, +REPORT_NDIFF
-[]
-[('_files',
-  [('portlets',
-    [('data',
+>>> transmogrifier(u'quintagroup.transmogrifier.tests.portlets2') # doctest: +ELLIPSIS, +REPORT_NDIFF, +NORMALIZE_WHITESPACE
+{}
+{'_files':
+  {'portlets':
+    {'data':
 ...
-     ('name', '.portlets.xml')])]),
- ('_path', 'other-assignable'),
- ('files',
-  [('portlets',
-    [('data',
+     'name': '.portlets.xml'}},
+ '_path': 'other-assignable',
+ 'files':
+  {'portlets':
+    {'data':
 ...
-     ('name', '.portlets.xml')])])]
+     'name': '.portlets.xml'}}}
 <?xml version="1.0" encoding="utf-8"?>
 <portlets>
   <assignment category="context" key="/other-assignable" manager="plone.leftcolumn" name="rss" type="portlets.rss">

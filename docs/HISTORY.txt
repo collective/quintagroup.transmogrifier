@@ -13,6 +13,10 @@ Changelog
 - Added export button to `pipeline-config`-view
   [tom_gross]
 
+- Make sure we do not loose references saved in REFERENCE_QUEUE in case
+  we have an object with several ReferenceFields
+  [gbastien]
+
 0.5 (23-08-2013)
 ----------------
 

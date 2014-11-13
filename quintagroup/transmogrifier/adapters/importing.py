@@ -68,7 +68,8 @@ class ReferenceImporter(object):
                 mutator(uids)
             else:
                 suid = str(root.getElementsByTagName('uid')[0].firstChild.nodeValue.strip())
-                REFERENCE_QUEUE[suid] = {}
+                if not suid in REFERENCE_QUEUE:
+                    REFERENCE_QUEUE[suid] = {}
                 REFERENCE_QUEUE[suid][fname] = uids
             root.removeChild(elem)
         return doc.toxml('utf-8')

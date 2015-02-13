@@ -1,10 +1,33 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal">
 <head>
   <title>Content migration configuration</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <style>
+/* style the export button */
+#qtexport {
+  background: #fc9292;
+  background-image: -webkit-linear-gradient(top, #fc9292, #e80303);
+  background-image: -moz-linear-gradient(top, #fc9292, #e80303);
+  background-image: -ms-linear-gradient(top, #fc9292, #e80303);
+  background-image: -o-linear-gradient(top, #fc9292, #e80303);
+  background-image: linear-gradient(to bottom, #fc9292, #e80303);
+  -webkit-border-radius: 9;
+  -moz-border-radius: 9;
+  border-radius: 9px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#qtexport:hover {
+  text-decoration: none;
+   cursor:pointer
+}
+  </style>
 </head>
 <body>
 
@@ -27,6 +50,10 @@
         tal:attributes="action request/getURL">
 
         <table>
+            <tr style="line-height: 40px;">
+              <td><a id="qtexport" href="#" tal:attributes="href string:${request/getURL}?do_export=true" i18n:translate="">Export</a></td>
+              <td></td>
+            </tr>
             <tr>
             <td>
                 <label>Export configuration <span style="color: red;" tal:condition="python:view.isDefault('export')">(default)</span></label>
@@ -44,8 +71,9 @@
                     config
                 </textarea>
             </td>
+            </tr>
         </table>
-        <input type="submit" name="action" value="Save" />
+        <input type="submit" name="action" value="Save" i18n:attributes="value" />
     </form>
 
 </body>

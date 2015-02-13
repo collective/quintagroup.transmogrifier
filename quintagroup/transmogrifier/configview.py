@@ -3,6 +3,8 @@ from zope.annotation import IAnnotations
 from Products.Five.browser import BrowserView
 
 from collective.transmogrifier.transmogrifier import configuration_registry
+from Products.CMFCore.utils import getToolByName
+from Acquisition import aq_inner
 
 ANNOKEY = 'quintagroup.transmogrifier.config'
 
@@ -43,6 +45,10 @@ class PipelineConfigView(BrowserView):
                 self.status = 'Changes: %s configuration.' % ' and '.join(stat)
             else:
                 self.status = 'No changes'
+	elif self.request.form.get('do_export') is not None:
+            gs_tool = getToolByName(aq_inner(self.context), 'portal_setup')
+            RESPONSE = self.request.RESPONSE
+            return gs_tool.manage_exportSelectedSteps(['content_quinta'], RESPONSE)
 
         return self.index()
 

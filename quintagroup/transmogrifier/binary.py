@@ -53,7 +53,13 @@ class FileExporterSection(object):
                 binary_fields = {}
                 binary_field_names = []
                 for field in schema.keys():
-                    if obj.isBinary(field):
+                    try:
+                        is_binary = obj.isBinary(field)
+                    except AttributeError: 
+                        # Products.MimetypesRegistry (2.0.6) raises this on certain
+                        # BlobWrapper objects
+                        continue
+                    if is_binary:
                         binary_field_names.append(field)
                         if not self.condition(item, context=obj, fname=field):
                             continue

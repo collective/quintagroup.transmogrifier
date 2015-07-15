@@ -108,23 +108,23 @@ New portlet must be added to existent ones.
 
 >>> 'habra-rss' in mapping
 True
->>> mapping['habra-rss'].count
+>>> int(mapping['habra-rss'].count)
 20
 >>> mapping['habra-rss'].url
 u'http://habrahabr.ru/rss/'
 >>> mapping['habra-rss'].portlet_title
 u'Habrahabr RSS feed'
->>> mapping['habra-rss'].timeout
+>>> int(mapping['habra-rss'].timeout)
 120
 >>> 'rss' in mapping
 True
->>> mapping['rss'].count
+>>> int(mapping['rss'].count)
 10
 >>> mapping['rss'].url
 u'http://sumno.com/feeds/main-page/'
 >>> mapping['rss'].portlet_title
 u'RSS feed'
->>> mapping['rss'].timeout
+>>> int(mapping['rss'].timeout)
 60
 
 

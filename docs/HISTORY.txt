@@ -10,6 +10,9 @@ Changelog
 - Respect fields added by schemaextender
   [tom_gross]
 
+- Added export button to `pipeline-config`-view
+  [tom_gross]
+
 - Make sure we do not loose references saved in REFERENCE_QUEUE in case
   we have an object with several ReferenceFields
   [gbastien]

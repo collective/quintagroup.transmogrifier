@@ -435,7 +435,10 @@ def commentsSetUp(test):
                 self.text
                 )
 
-    from Products.CMFDefault import DiscussionItem
+    try:
+        from Products.CMFDefault import DiscussionItem
+    except ImportError:
+        pass
     DiscussionItem.DiscussionItem = MockDiscussionItem
 
     class MockPortal(object):

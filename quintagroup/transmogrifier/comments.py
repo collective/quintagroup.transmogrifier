@@ -4,8 +4,13 @@ from zope.interface import classProvides, implements
 
 from Acquisition import aq_base
 from Products.CMFCore import utils
-from Products.CMFDefault import DiscussionItem
-from Products.CMFDefault.exceptions import DiscussionNotAllowed
+
+cmfdefault = True
+try:
+    from Products.CMFDefault import DiscussionItem
+    from Products.CMFDefault.exceptions import DiscussionNotAllowed
+except ImportError:
+    cmfdefault = False
 
 from collective.transmogrifier.interfaces import ISection, ISectionBlueprint
 from collective.transmogrifier.utils import defaultMatcher

@@ -1,2 +1,10 @@
-recursive-include quintagroup *
+include *.py
+include *.txt
+include buildout.cfg
+include test-4.0.x.cfg
+include test-4.1.x.cfg
+include test-4.2.x.cfg
+include test-4.3.x.cfg
+recursive-include docs *.txt
 recursive-exclude quintagroup *.py[co]
+recursive-include quintagroup *
